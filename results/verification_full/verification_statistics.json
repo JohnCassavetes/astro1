@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-03-10T18:05:02.993343",
+  "total_candidates": 167,
+  "confirmed_uncataloged": 167,
+  "known_objects": 0,
+  "needs_review": 0,
+  "by_method": {
+    "both_anomaly": 21,
+    "method_a_only": 74,
+    "method_b_only": 72
+  },
+  "verification_databases": [
+    "SIMBAD",
+    "NED",
+    "SDSS DR19",
+    "arXiv",
+    "ADS"
+  ],
+  "search_radius_arcsec": 5.0
+}
