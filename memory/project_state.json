@@ -73,8 +73,13 @@
   "blockers": [
     "Requires spectroscopic follow-up for final confirmation"
   ],
-  "last_heartbeat": "2026-03-09T23:35:00",
+  "last_heartbeat": "2026-03-10T00:05:00",
   "next_checkpoint": "RNAAS_submission",
+  "observation_requests": {
+    "spectroscopy": "docs/spectroscopy_request.md",
+    "deep_imaging": "docs/deep_imaging_request.md",
+    "status": "prepared_pending_telescope_time"
+  },
   "discoveries": {
     "total_candidates": 3,
     "high_priority": [
