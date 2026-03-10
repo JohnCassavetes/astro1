@@ -258,7 +258,19 @@ def main():
         'elapsed_seconds': elapsed,
         'workers': args.workers
     })
-    state['total_downloaded'] = total_downloaded
+    state['total_downloaded'] = int(total_downloaded)
+    
+    # Convert numpy types to Python native types for JSON serialization
+    def convert_to_native(obj):
+        if hasattr(obj, 'item'):  # numpy scalar
+            return obj.item()
+        elif isinstance(obj, dict):
+            return {k: convert_to_native(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [convert_to_native(i) for i in obj]
+        return obj
+    
+    state = convert_to_native(state)
     
     with open(state_path, 'w') as f:
         json.dump(state, f, indent=2)
