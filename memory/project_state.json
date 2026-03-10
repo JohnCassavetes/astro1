@@ -19,7 +19,7 @@
     "paper_preparation": { "status": "in_progress", "started": "2026-03-09", "completed": null }
   },
   "blockers": ["Requires spectroscopic follow-up for final confirmation"],
-  "last_heartbeat": "2026-03-09T23:25:00",
+  "last_heartbeat": "2026-03-09T23:35:00",
   "next_checkpoint": "RNAAS_submission",
   "discoveries": {
     "total_candidates": 3,
