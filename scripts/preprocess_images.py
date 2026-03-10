@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Stage 2: Preprocess Images
+Stage 2: Preprocess Real SDSS Images
 
-Load raw FITS images, normalize, resize, create RGB composites.
+Load JPEG/FITS cutouts, normalize, create RGB composites.
 """
 
 import os
@@ -15,6 +15,12 @@ import pandas as pd
 from tqdm import tqdm
 from PIL import Image
 
+try:
+    from astropy.io import fits
+    ASTROPY_AVAILABLE = True
+except ImportError:
+    ASTROPY_AVAILABLE = False
+
 # Paths
 ROOT = Path("~/Desktop/astro1").expanduser()
 DATA_RAW = ROOT / "data" / "raw"
@@ -24,7 +30,6 @@ MEMORY = ROOT / "memory"
 
 # Preprocessing config
 TARGET_SIZE = (224, 224)  # ResNet input size
-BANDS = ['g', 'r', 'i']
 
 def load_state() -> dict:
     with open(MEMORY / "project_state.json") as f:
@@ -40,74 +45,72 @@ def update_project_state(phase: str, status: str):
     with open(proj_path, 'w') as f:
         json.dump(proj, f, indent=2)
 
-def create_synthetic_galaxy_image(seed: int, size: Tuple[int, int] = (224, 224)) -> np.ndarray:
+def load_sdss_image(filepath: str) -> Optional[np.ndarray]:
     """
-    Create a synthetic galaxy image for testing.
+    Load SDSS image (JPEG or FITS).
+    Returns normalized RGB array [0, 1].
     """
-    np.random.seed(seed)
+    path = Path(filepath)
     
-    # Create base image
-    img = np.zeros((*size, 3), dtype=np.float32)
+    if not path.exists():
+        return None
     
-    # Add noise background
-    img += np.random.normal(0, 0.05, img.shape)
+    try:
+        if path.suffix == '.jpg' or path.suffix == '.jpeg':
+            # Load JPEG
+            img = Image.open(path)
+            img = img.convert('RGB')
+            img_array = np.array(img).astype(np.float32) / 255.0
+            return img_array
+            
+        elif path.suffix == '.fits' or path.suffix == '.fits.gz':
+            # Load FITS
+            if not ASTROPY_AVAILABLE:
+                return None
+            with fits.open(path) as hdul:
+                data = hdul[0].data
+                # Normalize
+                data = data.astype(np.float32)
+                data = (data - data.min()) / (data.max() - data.min() + 1e-8)
+                # Convert to RGB if grayscale
+                if data.ndim == 2:
+                    data = np.stack([data] * 3, axis=-1)
+                return data
+                
+    except Exception as e:
+        print(f"  Error loading {filepath}: {e}")
+        return None
     
-    # Add central "galaxy"
-    cx, cy = size[0] // 2, size[1] // 2
-    y, x = np.ogrid[:size[0], :size[1]]
-    
-    # Random galaxy parameters
-    ellipticity = np.random.uniform(0.1, 0.8)
-    angle = np.random.uniform(0, np.pi)
-    
-    # Create elliptical Gaussian
-    cos_a, sin_a = np.cos(angle), np.sin(angle)
-    x_rot = (x - cx) * cos_a + (y - cy) * sin_a
-    y_rot = -(x - cx) * sin_a + (y - cy) * cos_a
-    
-    a = np.random.uniform(10, 40)  # semi-major axis
-    b = a * (1 - ellipticity)  # semi-minor axis
-    
-    gaussian = np.exp(-((x_rot/a)**2 + (y_rot/b)**2))
-    
-    # Color (g-r-i bands roughly)
-    color_offset = np.random.uniform(-0.2, 0.2, 3)
-    for i in range(3):
-        img[:, :, i] += gaussian * (1 + color_offset[i]) * np.random.uniform(0.5, 1.5)
-    
-    # Add occasional "peculiar" features
-    if np.random.random() < 0.2:
-        # Add a ring
-        r = np.sqrt((x - cx)**2 + (y - cy)**2)
-        ring = np.exp(-((r - a*1.5)/5)**2)
-        img[:, :, 0] += ring * 0.3
-        img[:, :, 1] += ring * 0.5
-    
-    if np.random.random() < 0.1:
-        # Add tidal tail
-        tail_x = cx + int(a * 2)
-        tail_y = cy + np.random.randint(-20, 20)
-        for j in range(30):
-            if 0 <= tail_x + j < size[0] and 0 <= tail_y < size[1]:
-                img[tail_y:tail_y+3, tail_x+j:tail_x+j+2, :] += 0.2 * np.exp(-j/10)
-    
-    # Clip and normalize
-    img = np.clip(img, 0, None)
-    img = img / (img.max() + 1e-8)
-    
-    return img
+    return None
 
-def normalize_image(img: np.ndarray, method: str = 'zscore') -> np.ndarray:
-    """Normalize image to [0, 1] range."""
-    if method == 'zscore':
+def resize_image(img: np.ndarray, target_size: Tuple[int, int]) -> np.ndarray:
+    """
+    Resize image to target size.
+    """
+    pil_img = Image.fromarray((img * 255).astype(np.uint8))
+    pil_img = pil_img.resize(target_size, Image.Resampling.LANCZOS)
+    return np.array(pil_img).astype(np.float32) / 255.0
+
+def normalize_image(img: np.ndarray, method: str = 'imagenet') -> np.ndarray:
+    """
+    Normalize image for model input.
+    
+    Methods:
+    - 'imagenet': Standard ImageNet normalization
+    - 'zscore': Zero mean, unit variance
+    - 'minmax': Scale to [0, 1]
+    """
+    if method == 'imagenet':
+        # ImageNet normalization
+        mean = np.array([0.485, 0.456, 0.406])
+        std = np.array([0.229, 0.224, 0.225])
+        img = (img - mean) / std
+    elif method == 'zscore':
         img = (img - img.mean()) / (img.std() + 1e-8)
-        img = (img - img.min()) / (img.max() - img.min() + 1e-8)
     elif method == 'minmax':
         img = (img - img.min()) / (img.max() - img.min() + 1e-8)
-    elif method == 'log':
-        img = np.log1p(img)
-        img = img / img.max()
-    return np.clip(img, 0, 1).astype(np.float32)
+    
+    return img.astype(np.float32)
 
 def preprocess_catalog(catalog_path: Path) -> pd.DataFrame:
     """
@@ -119,30 +122,72 @@ def preprocess_catalog(catalog_path: Path) -> pd.DataFrame:
     processed_records = []
     
     for idx, row in tqdm(df.iterrows(), total=len(df)):
-        objid = str(row['objid'])
+        objid = str(int(row['objid']))
         
-        # Generate synthetic image (replace with actual FITS loading)
-        img = create_synthetic_galaxy_image(seed=idx, size=TARGET_SIZE)
+        # Try to load image
+        filepath = row.get('filepath')
         
-        # Normalize
-        img = normalize_image(img, method='minmax')
+        if pd.isna(filepath) or not filepath:
+            # No image available - skip or create placeholder
+            record = {
+                'objid': objid,
+                'ra': row['ra'],
+                'dec': row['dec'],
+                'processed_path': None,
+                'mean_flux': None,
+                'std_flux': None,
+                'quality_pass': False,
+                'error': 'no_image'
+            }
+            processed_records.append(record)
+            continue
         
-        # Save processed image
+        # Load image
+        img = load_sdss_image(filepath)
+        
+        if img is None:
+            record = {
+                'objid': objid,
+                'ra': row['ra'],
+                'dec': row['dec'],
+                'processed_path': None,
+                'mean_flux': None,
+                'std_flux': None,
+                'quality_pass': False,
+                'error': 'load_failed'
+            }
+            processed_records.append(record)
+            continue
+        
+        # Resize
+        if img.shape[:2] != TARGET_SIZE:
+            img = resize_image(img, TARGET_SIZE)
+        
+        # Normalize (store both imagenet and raw versions)
+        img_raw = img.copy()
+        img_norm = normalize_image(img, method='imagenet')
+        
+        # Quality check
+        mean_flux = img_raw.mean()
+        std_flux = img_raw.std()
+        
+        # Pass if reasonable flux levels and not all zeros
+        quality_pass = (mean_flux > 0.01) and (std_flux > 0.01)
+        
+        # Save processed image (normalized for model)
         output_path = DATA_PROC / f"{objid}.npy"
-        np.save(output_path, img)
-        
-        # Quality check (simple stats)
-        mean_flux = img.mean()
-        std_flux = img.std()
+        np.save(output_path, img_norm)
         
         record = {
             'objid': objid,
             'ra': row['ra'],
             'dec': row['dec'],
             'processed_path': str(output_path),
+            'raw_path': filepath,
             'mean_flux': float(mean_flux),
             'std_flux': float(std_flux),
-            'quality_pass': True  # All pass for now
+            'quality_pass': quality_pass,
+            'error': None
         }
         processed_records.append(record)
     
@@ -169,9 +214,20 @@ def main():
     output_path = DATA_META / "processed_catalog.csv"
     df_proc.to_csv(output_path, index=False)
     
+    # Summary
+    n_total = len(df_proc)
+    n_passed = df_proc['quality_pass'].sum()
+    n_failed = n_total - n_passed
+    
+    print(f"\n{'='*60}")
+    print(f"Preprocessing complete:")
+    print(f"  Total: {n_total}")
+    print(f"  Passed: {n_passed}")
+    print(f"  Failed: {n_failed}")
+    print(f"{'='*60}")
+    
     update_project_state("preprocessing", "completed")
-    print(f"\nStage 2 complete. Processed {len(df_proc)} galaxies.")
-    print(f"Saved to: {output_path}")
+    print(f"\nSaved to: {output_path}")
 
 if __name__ == "__main__":
     main()
