@@ -39,6 +39,10 @@ def load_catalogs():
     candidates_df = pd.read_csv(RESULTS_CAND / "filtered_candidates.csv")
     return anomaly_df, candidates_df
 
+def load_embedding_catalog():
+    """Load embedding catalog with objid mapping."""
+    return pd.read_csv(ROOT / "data" / "metadata" / "embedding_catalog.csv")
+
 def plot_anomaly_score_distribution(save_path: Path):
     """
     Figure 2: Distribution of anomaly scores with threshold.
@@ -150,7 +154,22 @@ def plot_embedding_projection(save_path: Path):
     from sklearn.decomposition import PCA
     
     embeddings = load_embeddings()
+    emb_catalog = load_embedding_catalog()
     anomaly_df, _ = load_catalogs()
+    
+    # Remove duplicates - keep first occurrence of each embedding_idx
+    emb_catalog = emb_catalog.drop_duplicates(subset=['embedding_idx'], keep='first').reset_index(drop=True)
+    
+    # Sort by embedding_idx to match embeddings array order
+    emb_catalog = emb_catalog.sort_values('embedding_idx').reset_index(drop=True)
+    
+    # Align anomaly scores with embeddings using objid
+    emb_objids = set(emb_catalog['objid'].values)
+    anomaly_filtered = anomaly_df[anomaly_df['objid'].isin(emb_objids)].copy()
+    
+    # Create anomaly flag aligned with embeddings
+    objid_to_anomaly = dict(zip(anomaly_filtered['objid'], anomaly_filtered['is_anomaly']))
+    is_anomaly = np.array([objid_to_anomaly.get(oid, False) for oid in emb_catalog['objid']])
     
     # PCA to 2D
     pca = PCA(n_components=2)
@@ -159,8 +178,6 @@ def plot_embedding_projection(save_path: Path):
     fig, ax = plt.subplots(figsize=(8, 7))
     
     # Plot all galaxies
-    is_anomaly = anomaly_df['is_anomaly'].values
-    
     ax.scatter(proj[~is_anomaly, 0], proj[~is_anomaly, 1], 
               c='lightgray', s=1, alpha=0.5, label='Normal')
     ax.scatter(proj[is_anomaly, 0], proj[is_anomaly, 1], 
