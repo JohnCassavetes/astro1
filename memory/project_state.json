@@ -2,7 +2,7 @@
   "project_name": "Novelty-Filtered Discovery of Unusual Astronomical Objects in SDSS",
   "subtitle": "A Machine Learning Approach to Detecting Uncataloged Planets and Galaxies",
   "status": "in_progress",
-  "current_phase": "anomaly_detection",
+  "current_phase": "candidate_review",
   "phases": {
     "setup": {
       "status": "completed",
@@ -68,13 +68,19 @@
       "status": "completed",
       "started": "2026-03-09",
       "completed": "2026-03-09"
+    },
+    "rnaas_submission": {
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09",
+      "submitted_to": "RNAAS (Research Notes of the American Astronomical Society)"
     }
   },
   "blockers": [
     "Requires spectroscopic follow-up for final confirmation"
   ],
-  "last_heartbeat": "2026-03-10T00:05:00",
-  "next_checkpoint": "RNAAS_submission",
+  "last_heartbeat": "2026-03-10T00:15:00",
+  "next_checkpoint": "spectroscopic_followup",
   "observation_requests": {
     "spectroscopy": "docs/spectroscopy_request.md",
     "deep_imaging": "docs/deep_imaging_request.md",
