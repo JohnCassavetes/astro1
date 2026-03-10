@@ -1,0 +1,34 @@
+{
+  "target_objects": ["uncataloged_planets", "unusual_galaxies", "anomalous_stellar_objects"],
+  "ml_approach": "multi_task_detection",
+  "algorithms": {
+    "detection": {
+      "method": "Deep CNN with Attention",
+      "architecture": "ResNet50 + CBAM attention + multi-head classifier",
+      "inputs": "256x256 RGB image patches",
+      "outputs": ["object_class", "novelty_score", "coordinate_refinement"],
+      "training_data": "SDSS imaging + synthetic anomalies"
+    },
+    "novelty_detection": {
+      "method": "Variational Autoencoder + Isolation Forest",
+      "description": "VAE learns normal appearance, reconstruction error = anomaly score",
+      "threshold": "Top 1% reconstruction error flagged for review"
+    },
+    "confirmation": {
+      "method": "Ensemble consensus",
+      "description": "Multiple models must agree on detection significance"
+    }
+  },
+  "proof_requirements": {
+    "coordinates": "J2000 RA/Dec to 0.1 arcsec precision",
+    "imaging": "Before/after comparison if available",
+    "timestamp": "Detection date and observation MJD",
+    "confidence": "ML probability + cross-validation score",
+    "verification": "Independent confirmation via external catalogs"
+  },
+  "evaluation_metrics": {
+    "precision": "Min 90% - avoid false discoveries",
+    "recall": "Target 80% - catch genuine anomalies",
+    "novelty_rate": "Max 5% of detections should be truly uncataloged"
+  }
+}

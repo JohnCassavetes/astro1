@@ -1,20 +1,60 @@
 {
-  "title": "Novelty-Filtered Discovery of Unusual Galaxy Candidates in the Sloan Digital Sky Survey",
+  "title": "Deep Learning Detection of Uncataloged Astronomical Objects in the Sloan Digital Sky Survey",
   "authors": ["J (human)", "PeakBot (AI assistant)"],
-  "sections": {
-    "abstract": {"status": "pending", "word_count": 0},
-    "introduction": {"status": "pending", "word_count": 0, "key_points": []},
-    "data": {"status": "pending", "word_count": 0, "key_points": []},
-    "methods": {"status": "pending", "word_count": 0, "sub_sections": ["embedding", "anomaly_detection", "novelty_filtering"]},
-    "results": {"status": "pending", "word_count": 0, "sub_sections": ["candidates", "classification"]},
-    "discussion": {"status": "pending", "word_count": 0, "key_points": []},
-    "conclusion": {"status": "pending", "word_count": 0}
+  "affiliation": "Independent Research",
+  "abstract": {
+    "status": "draft",
+    "text": "We present a novel machine learning framework for detecting previously uncataloged astronomical objects in large-scale sky surveys. Using a multi-task convolutional neural network with attention mechanisms, we analyze Sloan Digital Sky Survey (SDSS) DR19 imaging to identify candidate planets, unusual galaxies, and anomalous stellar objects. Our approach combines deep feature extraction with variational autoencoder-based novelty detection to flag objects inconsistent with known populations. We validate the algorithm through cross-matching with SIMBAD, NED, and Exoplanet Archive, presenting N candidate detections with coordinates, imaging, and confidence metrics. This work demonstrates the potential for AI-assisted discovery in archival astronomical data."
   },
-  "target_journal": "RNAAS or similar",
-  "max_words": 2500,
-  "figures_planned": [
-    "Figure 1: Sample of detected anomalies",
-    "Figure 2: Anomaly score distribution",
-    "Figure 3: Candidate gallery"
-  ]
+  "sections": {
+    "introduction": {
+      "status": "draft",
+      "key_points": [
+        "Problem: Vast archives of astronomical imaging contain undiscovered objects",
+        "Challenge: Human inspection doesn't scale to billions of sources",
+        "Solution: ML system trained to detect anomalies and novel objects",
+        "Validation: Independent catalog cross-matching for verification"
+      ]
+    },
+    "methods": {
+      "status": "outline",
+      "subsections": {
+        "data": "SDSS DR19 imaging, 3M+ galaxies, selection criteria",
+        "architecture": "ResNet50 + CBAM + multi-task heads",
+        "training": "Supervised pre-training + unsupervised anomaly detection",
+        "inference": "Sliding window detection, NMS, coordinate refinement",
+        "validation": "Cross-match with SIMBAD, NED, Exoplanet Archive, VizieR"
+      }
+    },
+    "results": {
+      "status": "outline",
+      "subsections": {
+        "algorithm_performance": "Precision, recall, ROC curves",
+        "detection_catalog": "Table of N candidates with coordinates",
+        "gallery": "Image cutouts of top detections",
+        "verification": "Cross-match results for each candidate"
+      }
+    },
+    "discussion": {
+      "status": "outline",
+      "key_points": [
+        "Comparison to traditional detection methods",
+        "Limitations: Brightness limits, classification ambiguity",
+        "Future work: Spectroscopic follow-up, time-domain analysis"
+      ]
+    }
+  },
+  "figures": [
+    "Figure 1: Algorithm architecture diagram",
+    "Figure 2: Training/validation loss curves",
+    "Figure 3: ROC curve and precision-recall",
+    "Figure 4: Gallery of detected candidates with coordinates",
+    "Figure 5: Verification status breakdown"
+  ],
+  "tables": [
+    "Table 1: Detection summary statistics",
+    "Table 2: Top 20 candidate objects with RA, Dec, confidence, verification status"
+  ],
+  "target_journal": "RNAAS or MNRAS Letters",
+  "max_words": 3000
 }
