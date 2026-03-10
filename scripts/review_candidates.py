@@ -65,10 +65,11 @@ def generate_review_report(candidates_path: Path) -> str:
         report_lines.append("|---|---|---|---|---|")
         
         for _, row in uncataloged.head(20).iterrows():
+            objid_str = str(row['objid'])
             evidence = json.loads(row['evidence_log'])
             evidence_str = '; '.join(evidence[:2]) if evidence else 'None'
             report_lines.append(
-                f"| {row['objid'][:12]}... | {row['ra']:.4f} | {row['dec']:+.4f} | "
+                f"| {objid_str[:12]}... | {row['ra']:.4f} | {row['dec']:+.4f} | "
                 f"{row['anomaly_score']:.4f} | {evidence_str} |"
             )
     
@@ -80,8 +81,9 @@ def generate_review_report(candidates_path: Path) -> str:
     ])
     
     for _, row in df.head(10).iterrows():
+        objid_str = str(row['objid'])
         report_lines.append(
-            f"| {row['objid'][:12]}... | {row['ra']:.4f} | {row['dec']:+.4f} | "
+            f"| {objid_str[:12]}... | {row['ra']:.4f} | {row['dec']:+.4f} | "
             f"{row['anomaly_score']:.4f} | {row['label']} |"
         )
     

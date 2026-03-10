@@ -1,0 +1,3 @@
+objid,ra,dec,processed_path,raw_path,mean_flux,std_flux,quality_pass,error,embedding_file,embedding_idx,embedding_dim,anomaly_score,is_anomaly
+12376400000000000008,299.9176985004104,9.939196572483828,/Users/a/Desktop/astro1/data/processed/12376400000000000008.npy,/Users/a/Desktop/astro1/data/raw/12376400000000000008.jpg,0.0621348284184932,0.1110025495290756,True,,/Users/a/Desktop/astro1/results/embeddings/galaxy_embeddings.npy,8,2048,-0.1262073788037234,True
+12376400000000000004,150.0184829137724,1.909290082544,/Users/a/Desktop/astro1/data/processed/12376400000000000004.npy,/Users/a/Desktop/astro1/data/raw/12376400000000000004.jpg,0.0510983280837535,0.0500102527439594,True,,/Users/a/Desktop/astro1/results/embeddings/galaxy_embeddings.npy,4,2048,-0.00975242005690713,True

@@ -2,7 +2,7 @@
   "project_name": "Novelty-Filtered Discovery of Unusual Astronomical Objects in SDSS",
   "subtitle": "A Machine Learning Approach to Detecting Uncataloged Planets and Galaxies",
   "status": "in_progress",
-  "current_phase": "preprocessing",
+  "current_phase": "candidate_review",
   "phases": {
     "setup": {
       "status": "completed",
@@ -16,27 +16,27 @@
     },
     "preprocessing": {
       "status": "completed",
-      "started": null,
-      "completed": null
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
     },
     "embedding": {
-      "status": "pending",
-      "started": null,
-      "completed": null
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
     },
     "anomaly_detection": {
-      "status": "pending",
-      "started": null,
-      "completed": null
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
     },
     "novelty_filtering": {
-      "status": "pending",
-      "started": null,
-      "completed": null
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
     },
     "candidate_review": {
-      "status": "pending",
-      "started": null,
+      "status": "completed",
+      "started": "2026-03-09",
       "completed": null
     },
     "algorithm_development": {
@@ -66,6 +66,6 @@
     }
   },
   "blockers": [],
-  "last_heartbeat": "2026-03-09T21:55:00",
-  "next_checkpoint": "preprocessing"
+  "last_heartbeat": "2026-03-09T22:05:00",
+  "next_checkpoint": "candidate_review"
 }

@@ -1,9 +1,34 @@
 {
-  "candidates": [],
+  "candidates": [
+    {
+      "objid": 12376400000000000008,
+      "ra": 299.9176985004104,
+      "dec": 9.939196572483828,
+      "anomaly_score": -0.1262073788037234,
+      "label": "previously_discussed",
+      "evidence_log": "[\"Moderate anomaly score: -0.1262\", \"No catalog matches, needs literature check\"]",
+      "simbad_match": false,
+      "ned_match": false,
+      "artifact_flag": false,
+      "review_status": "pending"
+    },
+    {
+      "objid": 12376400000000000004,
+      "ra": 150.0184829137724,
+      "dec": 1.909290082544,
+      "anomaly_score": -0.0097524200569071,
+      "label": "known_recovered",
+      "evidence_log": "[\"NED match: NED J150.0185+1.9093\"]",
+      "simbad_match": false,
+      "ned_match": true,
+      "artifact_flag": false,
+      "review_status": "pending"
+    }
+  ],
   "counts": {
-    "total_detected": 0,
-    "known_recovered": 0,
-    "previously_discussed": 0,
+    "total_detected": 2,
+    "known_recovered": 1,
+    "previously_discussed": 1,
     "artifact_low_confidence": 0,
     "uncataloged_candidate": 0
   },
@@ -16,7 +41,12 @@
     "embedding": "reference to file",
     "label": "one of 4 categories",
     "evidence_log": "array of evidence strings",
-    "checked_against": ["SIMBAD", "NED", "Galaxy Zoo", "arxiv"],
+    "checked_against": [
+      "SIMBAD",
+      "NED",
+      "Galaxy Zoo",
+      "arxiv"
+    ],
     "review_status": "pending|in_review|complete",
     "reviewer_notes": "string"
   }

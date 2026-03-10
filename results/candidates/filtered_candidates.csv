@@ -1,0 +1,3 @@
+objid,ra,dec,anomaly_score,label,evidence_log,simbad_match,ned_match,artifact_flag,review_status
+12376400000000000008,299.9176985004104,9.939196572483828,-0.1262073788037234,previously_discussed,"[""Moderate anomaly score: -0.1262"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000004,150.0184829137724,1.909290082544,-0.0097524200569071,known_recovered,"[""NED match: NED J150.0185+1.9093""]",False,True,False,pending

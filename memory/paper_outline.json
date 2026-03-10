@@ -1,6 +1,9 @@
 {
   "title": "Deep Learning Detection of Uncataloged Astronomical Objects in the Sloan Digital Sky Survey",
-  "authors": ["J (human)", "PeakBot (AI assistant)"],
+  "authors": [
+    "J (human)",
+    "PeakBot (AI assistant)"
+  ],
   "affiliation": "Independent Research",
   "abstract": {
     "status": "draft",
@@ -56,5 +59,11 @@
     "Table 2: Top 20 candidate objects with RA, Dec, confidence, verification status"
   ],
   "target_journal": "RNAAS or MNRAS Letters",
-  "max_words": 3000
+  "max_words": 3000,
+  "figures_planned": [
+    "Figure 1: Embedding space projection (fig1_embedding_projection.png)",
+    "Figure 2: Anomaly score distribution (fig2_anomaly_distribution.png)",
+    "Figure 3: Classification breakdown (fig3_classification_breakdown.png)",
+    "Figure 4: Candidate gallery (fig4_candidate_gallery.png)"
+  ]
 }

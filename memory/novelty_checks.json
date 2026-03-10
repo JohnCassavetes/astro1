@@ -1,9 +1,24 @@
 {
   "novelty_checks": {
     "databases": [
-      {"name": "SIMBAD", "url": "http://simbad.u-strasbg.fr", "method": "cone_search", "checked": false},
-      {"name": "NED", "url": "https://ned.ipac.caltech.edu", "method": "cone_search", "checked": false},
-      {"name": "VizieR", "url": "https://vizier.cds.unistra.fr", "method": "cone_search", "checked": false}
+      {
+        "name": "SIMBAD",
+        "url": "http://simbad.u-strasbg.fr",
+        "method": "cone_search",
+        "checked": true
+      },
+      {
+        "name": "NED",
+        "url": "https://ned.ipac.caltech.edu",
+        "method": "cone_search",
+        "checked": true
+      },
+      {
+        "name": "VizieR",
+        "url": "https://vizier.cds.unistra.fr",
+        "method": "cone_search",
+        "checked": false
+      }
     ],
     "literature": {
       "arxiv_searched": false,

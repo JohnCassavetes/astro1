@@ -24,3 +24,7 @@
 - [x] Which anomaly detector? → IsolationForest (fast, interpretable)
 - [x] Sample size target? → 10k (weekend-feasible)
 - [x] Cutout size? → 30 arcsec (standard)
+
+**2026-03-09 22:08** - Candidate Review Complete
+- Decision: Reviewed all anomaly candidates
+- Action: Prepared gallery and evidence logs
