@@ -42,8 +42,16 @@
       "n_requested": 10,
       "n_retrieved": 10,
       "n_images_downloaded": 10
+    },
+    {
+      "timestamp": "2026-03-10 00:01:26",
+      "n_requested": 5500,
+      "n_success": 4102,
+      "n_failed": 1398,
+      "elapsed_seconds": 342.442578792572,
+      "workers": 10
     }
   ],
   "checksums": {},
-  "validation_passed": false
-}
+  "validation_passed": false,
+  "total_downloaded": 
