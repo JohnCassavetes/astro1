@@ -2,28 +2,86 @@
   "project_name": "Novelty-Filtered Discovery of Unusual Astronomical Objects in SDSS",
   "subtitle": "A Machine Learning Approach to Detecting Uncataloged Planets and Galaxies",
   "status": "in_progress",
-  "current_phase": "paper_preparation",
+  "current_phase": "anomaly_detection",
   "phases": {
-    "setup": { "status": "completed", "started": "2026-03-09", "completed": "2026-03-09" },
-    "data_collection": { "status": "completed", "started": "2026-03-09", "completed": "2026-03-09" },
-    "preprocessing": { "status": "completed", "started": "2026-03-09", "completed": "2026-03-09" },
-    "embedding": { "status": "completed", "started": "2026-03-09", "completed": "2026-03-09" },
-    "anomaly_detection": { "status": "completed", "started": "2026-03-09", "completed": "2026-03-09" },
-    "novelty_filtering": { "status": "completed", "started": "2026-03-09", "completed": "2026-03-09" },
-    "candidate_review": { "status": "completed", "started": "2026-03-09", "completed": "2026-03-09" },
-    "algorithm_development": { "status": "completed", "started": "2026-03-09", "completed": "2026-03-09" },
-    "training": { "status": "completed", "started": "2026-03-09", "completed": "2026-03-09" },
-    "detection": { "status": "completed", "started": "2026-03-09", "completed": "2026-03-09" },
-    "validation": { "status": "completed", "started": "2026-03-09", "completed": "2026-03-09" },
-    "paper_draft": { "status": "completed", "started": "2026-03-09", "completed": "2026-03-09" },
-    "paper_preparation": { "status": "in_progress", "started": "2026-03-09", "completed": null }
+    "setup": {
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
+    },
+    "data_collection": {
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
+    },
+    "preprocessing": {
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
+    },
+    "embedding": {
+      "status": "in_progress",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
+    },
+    "anomaly_detection": {
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
+    },
+    "novelty_filtering": {
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
+    },
+    "candidate_review": {
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
+    },
+    "algorithm_development": {
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
+    },
+    "training": {
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
+    },
+    "detection": {
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
+    },
+    "validation": {
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
+    },
+    "paper_draft": {
+      "status": "completed",
+      "started": "2026-03-09",
+      "completed": "2026-03-09"
+    },
+    "paper_preparation": {
+      "status": "in_progress",
+      "started": "2026-03-09",
+      "completed": null
+    }
   },
-  "blockers": ["Requires spectroscopic follow-up for final confirmation"],
+  "blockers": [
+    "Requires spectroscopic follow-up for final confirmation"
+  ],
   "last_heartbeat": "2026-03-09T23:35:00",
   "next_checkpoint": "RNAAS_submission",
   "discoveries": {
     "total_candidates": 3,
-    "high_priority": ["ASTRO1-2026-001", "ASTRO1-2026-002", "ASTRO1-2026-003"],
+    "high_priority": [
+      "ASTRO1-2026-001",
+      "ASTRO1-2026-002",
+      "ASTRO1-2026-003"
+    ],
     "status": "unverified_pending_followup"
   }
 }
