@@ -68,47 +68,76 @@ def plot_anomaly_score_distribution(save_path: Path):
 
 def plot_candidate_gallery(save_path: Path, n_candidates: int = 12):
     """
-    Figure 3: Gallery of top uncataloged candidates.
+    Figure 4: Gallery of top anomaly candidates (all classifications).
     """
+    from PIL import Image
+    
     _, candidates_df = load_catalogs()
     
-    # Get uncataloged candidates
-    uncataloged = candidates_df[candidates_df['label'] == 'uncataloged_candidate']
-    uncataloged = uncataloged.head(n_candidates)
+    # Get all candidates sorted by anomaly score (most anomalous first)
+    candidates_df = candidates_df.sort_values('anomaly_score', ascending=True)
+    candidates_df = candidates_df.head(n_candidates)
     
-    if len(uncataloged) == 0:
-        print("No uncataloged candidates for gallery")
+    if len(candidates_df) == 0:
+        print("No candidates for gallery")
+        # Create an empty placeholder figure
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.text(0.5, 0.5, 'No candidates detected in pilot sample', 
+                ha='center', va='center', transform=ax.transAxes, fontsize=14)
+        ax.axis('off')
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.close()
+        print(f"Saved placeholder: {save_path}")
         return
     
     # Create grid
-    n_cols = 4
-    n_rows = (len(uncataloged) + n_cols - 1) // n_cols
+    n_cols = 2
+    n_rows = (len(candidates_df) + n_cols - 1) // n_cols
     
-    fig = plt.figure(figsize=(12, 3 * n_rows))
-    gs = gridspec.GridSpec(n_rows, n_cols, hspace=0.3, wspace=0.3)
+    fig = plt.figure(figsize=(10, 5 * n_rows))
+    gs = gridspec.GridSpec(n_rows, n_cols, hspace=0.4, wspace=0.3)
     
-    for idx, (_, row) in enumerate(uncataloged.iterrows()):
+    # Color coding for labels
+    label_colors = {
+        'known_recovered': '#2ecc71',
+        'previously_discussed': '#3498db', 
+        'uncataloged_candidate': '#e74c3c',
+        'artifact_low_confidence': '#95a5a6'
+    }
+    
+    for idx, (_, row) in enumerate(candidates_df.iterrows()):
         ax = fig.add_subplot(gs[idx // n_cols, idx % n_cols])
         
-        # Load image
-        img_path = DATA_PROC / f"{row['objid']}.npy"
+        # Load image from raw data
+        img_path = ROOT / "data" / "raw" / f"{row['objid']}.jpg"
         if img_path.exists():
-            img = np.load(img_path)
+            img = Image.open(img_path)
             ax.imshow(img)
         else:
             ax.text(0.5, 0.5, 'Image N/A', ha='center', va='center', 
                    transform=ax.transAxes)
         
-        ax.set_title(f"{row['objid'][:10]}...\nScore: {row['anomaly_score']:.3f}", 
-                    fontsize=8)
+        label = row['label']
+        color = label_colors.get(label, 'gray')
+        
+        title = f"ID: {str(row['objid'])[-8:]}\nScore: {row['anomaly_score']:.4f}\n{label}"
+        ax.set_title(title, fontsize=9, color=color, fontweight='bold')
         ax.axis('off')
+        
+        # Add coordinate info
+        ra = row.get('ra', 'N/A')
+        dec = row.get('dec', 'N/A')
+        if ra != 'N/A' and dec != 'N/A':
+            ax.set_xlabel(f"RA: {ra:.4f}, Dec: {dec:.4f}", fontsize=7)
+            ax.xaxis.set_label_position('top')
     
     # Remove empty subplots
-    for idx in range(len(uncataloged), n_rows * n_cols):
+    for idx in range(len(candidates_df), n_rows * n_cols):
         ax = fig.add_subplot(gs[idx // n_cols, idx % n_cols])
         ax.axis('off')
     
-    plt.suptitle('Uncataloged Candidate Galaxies', fontsize=14, y=1.02)
+    plt.suptitle('Anomaly Candidates Detected in Pilot Sample (668 Galaxies)', 
+                 fontsize=14, y=0.98)
     plt.tight_layout()
     plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.close()

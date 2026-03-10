@@ -1,3 +1,33 @@
 objid,ra,dec,anomaly_score,label,evidence_log,simbad_match,ned_match,artifact_flag,review_status
-12376400000000000008,299.9176985004104,9.939196572483828,-0.1262073788037234,previously_discussed,"[""Moderate anomaly score: -0.1262"", ""No catalog matches, needs literature check""]",False,False,False,pending
-12376400000000000004,150.0184829137724,1.909290082544,-0.0097524200569071,known_recovered,"[""NED match: NED J150.0185+1.9093""]",False,True,False,pending
+12376400000000000191,194.9795093516684,-4.449107372586042,-0.2164367905604786,known_recovered,"[""SIMBAD match: G"", ""Distance: 0.94\""""]",True,False,False,pending
+12376400000000000221,196.76546431140488,66.43073486393018,-0.1489340301122818,previously_discussed,"[""Moderate anomaly score: -0.1489"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000601,49.89854322996269,68.83836502156281,-0.1369327321596943,previously_discussed,"[""Moderate anomaly score: -0.1369"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000460,315.50526081331685,45.05524650031673,-0.1083557332557514,previously_discussed,"[""Moderate anomaly score: -0.1084"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000538,281.6687402621224,52.92120414825709,-0.079272658316959,previously_discussed,"[""Moderate anomaly score: -0.0793"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000250,77.32056343549964,-2.7336359253098266,-0.0730557538157035,previously_discussed,"[""Moderate anomaly score: -0.0731"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000028,262.44494722408285,26.123960232764112,-0.0528279052781774,previously_discussed,"[""Moderate anomaly score: -0.0528"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000448,207.5602303613297,51.34523085438002,-0.047274898409348,previously_discussed,"[""Moderate anomaly score: -0.0473"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000018,234.13472702625305,20.545337373484287,-0.0426039549014082,previously_discussed,"[""Moderate anomaly score: -0.0426"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000534,62.324739985264806,-29.13092997718166,-0.0401528638821141,previously_discussed,"[""Moderate anomaly score: -0.0402"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000388,120.6138262847965,20.412924225073496,-0.0357021905123016,previously_discussed,"[""Moderate anomaly score: -0.0357"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000268,53.6322000377739,39.52221038096837,-0.0344856181471423,previously_discussed,"[""Moderate anomaly score: -0.0345"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000258,30.46579070928683,35.7933914757362,-0.033190493444519,previously_discussed,"[""Moderate anomaly score: -0.0332"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000248,249.1151827839816,18.50350058118276,-0.0293373433278694,previously_discussed,"[""Moderate anomaly score: -0.0293"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000220,129.65479582260855,7.365341779829663,-0.0211090599560815,previously_discussed,"[""Moderate anomaly score: -0.0211"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000094,258.97888304782504,30.72211756219896,-0.0174307266636146,previously_discussed,"[""Moderate anomaly score: -0.0174"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000450,280.9500691777733,33.22425147587162,-0.0156848596169162,previously_discussed,"[""Moderate anomaly score: -0.0157"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000558,43.74984264920013,10.090371989066732,-0.012571642528767,known_recovered,"[""SIMBAD match: G"", ""Distance: 0.89\""""]",True,False,False,pending
+12376400000000000138,269.76321407472795,40.52301115139144,-0.0123268909921974,previously_discussed,"[""Moderate anomaly score: -0.0123"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000360,179.20015090271653,64.15253480091785,-0.0117740946016156,previously_discussed,"[""Moderate anomaly score: -0.0118"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000294,240.48913039722183,-16.367727191573106,-0.0103119301806593,previously_discussed,"[""Moderate anomaly score: -0.0103"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000550,132.28693970477497,46.225571656351306,-0.0102096498122741,previously_discussed,"[""Moderate anomaly score: -0.0102"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000374,48.82282445884481,15.996696515797112,-0.0061011468951278,previously_discussed,"[""Moderate anomaly score: -0.0061"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000251,229.5400424950723,-19.698352541164272,-0.0052610590661424,previously_discussed,"[""Moderate anomaly score: -0.0053"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000454,240.73256560535,43.26213710388096,-0.0039400334023831,previously_discussed,"[""Moderate anomaly score: -0.0039"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000004,348.1307420449236,24.72322491757223,-0.0032902168174733,previously_discussed,"[""Moderate anomaly score: -0.0033"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000244,104.64395904625658,-20.072294902980776,-0.0024448160870553,previously_discussed,"[""Moderate anomaly score: -0.0024"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000100,195.6257790447476,-2.1630614906203824,-0.002087468191779,previously_discussed,"[""Moderate anomaly score: -0.0021"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000394,183.3659989402529,23.115824192865936,-0.001609522193808,previously_discussed,"[""Moderate anomaly score: -0.0016"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000604,105.11819051703144,-13.868320877534464,-0.0014647056009862,known_recovered,"[""NED match: NED J105.1182-13.8683""]",False,True,False,pending
+12376400000000000098,263.6162093047867,26.71890154508847,-0.0004519917197075,previously_discussed,"[""Moderate anomaly score: -0.0005"", ""No catalog matches, needs literature check""]",False,False,False,pending
+12376400000000000554,157.50166790723424,39.02826862858031,-0.000319010217162,previously_discussed,"[""Moderate anomaly score: -0.0003"", ""No catalog matches, needs literature check""]",False,False,False,pending

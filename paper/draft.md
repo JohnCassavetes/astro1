@@ -1,14 +1,15 @@
 # Draft: Novelty-Filtered Discovery of Unusual Galaxy Candidates in SDSS
 
-**Status:** Draft v0.1  
+**Status:** Draft v0.2 — Figures Complete  
 **Target:** RNAAS or similar rapid publication  
-**Word count:** ~2000 words target
+**Word count:** ~2000 words target  
+**Last Updated:** 2026-03-09
 
 ---
 
 ## Abstract
 
-We present a computational pipeline for discovering unusual galaxies in the Sloan Digital Sky Survey (SDSS) using anomaly detection and novelty filtering. Using self-supervised embeddings from a pretrained convolutional network and Isolation Forest anomaly detection on 668 randomly selected SDSS DR19 galaxies (pilot sample), we identify the most morphologically atypical objects. Cross-matching with SIMBAD, NED, and internal artifact filters yields 2 high-priority candidates: 1 known peculiar galaxy (recovered) and 1 potentially novel object requiring verification. Our method prioritizes conservative classification, preferring false negatives over false positives. All code and candidate lists are available at [repository URL].
+We present a computational pipeline for discovering unusual galaxies in the Sloan Digital Sky Survey (SDSS) using anomaly detection and novelty filtering. Using self-supervised embeddings from a pretrained convolutional network and Isolation Forest anomaly detection on 668 randomly selected SDSS DR19 galaxies (pilot sample), we identify the most morphologically atypical objects. Cross-matching with SIMBAD, NED, and internal artifact filters yields 2 high-priority candidates: 1 known peculiar galaxy (recovered) and 1 potentially novel object requiring verification. Our method prioritizes conservative classification, preferring false negatives over false positives. All code and candidate lists are available at https://github.com/j/astro1 (repository link TBD).
 
 *Keywords:* galaxies: peculiar — methods: data analysis — surveys: SDSS
 
@@ -175,4 +176,15 @@ Funding for SDSS has been provided by the Alfred P. Sloan Foundation, the Partic
 
 ---
 
-*Draft version 0.1 - [Date]*
+*Draft version 0.2 — Candidate review complete, all figures generated — 2026-03-09*
+
+---
+
+## Figure Checklist
+
+- [x] Figure 1: Embedding space projection (`fig1_embedding_projection.png`)
+- [x] Figure 2: Anomaly score distribution (`fig2_anomaly_distribution.png`)  
+- [x] Figure 3: Classification breakdown (`fig3_classification_breakdown.png`)
+- [x] Figure 4: Candidate gallery (`fig4_candidate_gallery.png`)
+
+All figures saved to `~/Desktop/astro1/results/figures/`

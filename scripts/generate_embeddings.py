@@ -89,7 +89,10 @@ def extract_embeddings(catalog_path: Path, batch_size: int = 32) -> pd.DataFrame
         batch_tensors = []
         
         for _, row in batch_df.iterrows():
-            img_path = Path(row['processed_path'])
+            processed_path = row['processed_path']
+            if pd.isna(processed_path):
+                continue
+            img_path = Path(processed_path)
             if img_path.exists():
                 img = np.load(img_path)
                 tensor = preprocess_for_model(img)
