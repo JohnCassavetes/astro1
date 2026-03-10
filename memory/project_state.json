@@ -1,8 +1,8 @@
 {
   "project": "astro1",
-  "phase": "batch_processing_complete",
-  "status": "consolidation",
-  "last_updated": "2026-03-10T03:15:00CDT",
+  "phase": "consolidation_complete",
+  "status": "publication_ready",
+  "last_updated": "2026-03-10T03:35:00CDT",
   "batch_processing": {
     "batch_size": 500,
     "total_galaxies": 5433,
@@ -12,10 +12,10 @@
     "batches_pending": 0
   },
   "candidates": {
-    "found_so_far": 7,
-    "projected_total": 7,
+    "found_total": 7,
     "pilot_batch": 7,
-    "status": "complete"
+    "expanded_sample": 0,
+    "status": "finalized"
   },
   "processing": {
     "method": "isolation_forest",
@@ -24,12 +24,13 @@
     "crossmatch_radius_arcsec": 5
   },
   "submission_status": {
-    "rnaas_draft": "ready",
+    "rnaas_draft": "finalized",
     "submitted": false,
-    "target": "spectroscopic_followup"
+    "target": "RNAAS_submission_pending_user_review"
   },
   "cron_jobs": {
-    "batch_ml": "220cf42f-64b3-4902-be6b-8898b775f4ac",
+    "batch_ml": "COMPLETE - REMOVED",
     "heartbeat": "07a3e678-f794-4b97-a585-116e14a443ce"
-  }
+  },
+  "summary": "All 5,433 galaxies processed. 7 high-confidence uncataloged candidates identified (all from pilot batch). Detection rate: 0.13% in full sample vs 1.2% in pilot. RNAAS draft updated with final numbers. Ready for user review and submission."
 }
