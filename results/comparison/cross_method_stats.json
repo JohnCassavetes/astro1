@@ -1,0 +1,9 @@
+{
+  "total_galaxies": 4690,
+  "method_a_anomalies": 95,
+  "method_b_anomalies": 93,
+  "both_methods": 21,
+  "method_a_only": 74,
+  "method_b_only": 72,
+  "either_method": 167
+}
