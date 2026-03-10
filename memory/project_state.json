@@ -6,10 +6,10 @@
   "batch_processing": {
     "batch_size": 500,
     "total_galaxies": 6831,
-    "processed_so_far": 596,
+    "processed_so_far": 1096,
     "batches_total": 13,
-    "batches_completed": 1,
-    "batches_pending": 12
+    "batches_completed": 2,
+    "batches_pending": 11
   },
   "candidates": {
     "found_so_far": 7,
