@@ -79,7 +79,7 @@
   "blockers": [
     "Requires spectroscopic follow-up for final confirmation"
   ],
-  "last_heartbeat": "2026-03-10T00:15:00",
+  "last_heartbeat": "2026-03-10T00:35:00",
   "next_checkpoint": "spectroscopic_followup",
   "observation_requests": {
     "spectroscopy": "docs/spectroscopy_request.md",
