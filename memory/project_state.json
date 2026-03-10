@@ -65,9 +65,9 @@
       "completed": "2026-03-09"
     },
     "paper_preparation": {
-      "status": "in_progress",
+      "status": "completed",
       "started": "2026-03-09",
-      "completed": null
+      "completed": "2026-03-09"
     }
   },
   "blockers": [

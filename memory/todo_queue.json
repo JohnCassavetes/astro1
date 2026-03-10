@@ -3,13 +3,13 @@
     {"id": 13, "task": "Spectroscopic follow-up for top 3 candidates", "priority": "high", "status": "pending", "agent": null},
     {"id": 14, "task": "Deep imaging request for ASTRO1-2026-001", "priority": "high", "status": "pending", "agent": null}
   ],
-  "in_progress": [
-    {"id": 15, "task": "Submit RNAAS discovery note", "priority": "medium", "status": "ready_for_submission", "agent": "PeakBot", "started_at": "2026-03-09T23:25:00"}
-  ],
+  "in_progress": [],
   "completed": [
     {"id": 1, "task": "Create all Python pipeline scripts", "completed_at": "2026-03-09T20:50:00"},
     {"id": 16, "task": "Update paper draft with discovery results", "completed_at": "2026-03-09T23:25:00"},
-    {"id": 17, "task": "Prepare RNAAS submission package", "completed_at": "2026-03-09T23:25:00"}
+    {"id": 17, "task": "Prepare RNAAS submission package", "completed_at": "2026-03-09T23:25:00"},
+    {"id": 15, "task": "Submit RNAAS discovery note", "priority": "medium", "status": "submitted", "agent": "PeakBot", "completed_at": "2026-03-09T23:55:00"},
+    {"id": 18, "task": "Git commit and push all recent work", "completed_at": "2026-03-09T23:56:00"}
   ],
-  "last_updated": "2026-03-09T23:25:00"
+  "last_updated": "2026-03-09T23:56:00"
 }
