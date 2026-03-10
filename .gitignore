@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Data (large files)
+data/raw/*.fits
+data/raw/*.fits.gz
+data/raw/*.h5
+data/processed/*.npy
+data/processed/*.npz
+results/embeddings/*.npy
+results/embeddings/*.h5
+results/embeddings/*.pt
+
+# Logs
+*.log
+results/logs/*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Secrets
+.env
+secrets/
+
+# Keep structure
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/metadata/.gitkeep
+!results/embeddings/.gitkeep
+!results/anomaly_scores/.gitkeep
+!results/candidates/.gitkeep
+!results/logs/.gitkeep
+!results/figures/.gitkeep

@@ -1,0 +1,20 @@
+{
+  "title": "Novelty-Filtered Discovery of Unusual Galaxy Candidates in the Sloan Digital Sky Survey",
+  "authors": ["J (human)", "PeakBot (AI assistant)"],
+  "sections": {
+    "abstract": {"status": "pending", "word_count": 0},
+    "introduction": {"status": "pending", "word_count": 0, "key_points": []},
+    "data": {"status": "pending", "word_count": 0, "key_points": []},
+    "methods": {"status": "pending", "word_count": 0, "sub_sections": ["embedding", "anomaly_detection", "novelty_filtering"]},
+    "results": {"status": "pending", "word_count": 0, "sub_sections": ["candidates", "classification"]},
+    "discussion": {"status": "pending", "word_count": 0, "key_points": []},
+    "conclusion": {"status": "pending", "word_count": 0}
+  },
+  "target_journal": "RNAAS or similar",
+  "max_words": 2500,
+  "figures_planned": [
+    "Figure 1: Sample of detected anomalies",
+    "Figure 2: Anomaly score distribution",
+    "Figure 3: Candidate gallery"
+  ]
+}

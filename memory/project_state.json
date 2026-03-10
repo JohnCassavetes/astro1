@@ -1,0 +1,18 @@
+{
+  "project_name": "Novelty-Filtered Discovery of Unusual Galaxy Candidates in SDSS",
+  "status": "ready",
+  "current_phase": "data_collection",
+  "phases": {
+    "setup": {"status": "completed", "started": "2026-03-09", "completed": "2026-03-09"},
+    "data_collection": {"status": "pending", "started": null, "completed": null},
+    "preprocessing": {"status": "pending", "started": null, "completed": null},
+    "embedding": {"status": "pending", "started": null, "completed": null},
+    "anomaly_detection": {"status": "pending", "started": null, "completed": null},
+    "novelty_filtering": {"status": "pending", "started": null, "completed": null},
+    "candidate_review": {"status": "pending", "started": null, "completed": null},
+    "paper_draft": {"status": "in_progress", "started": "2026-03-09", "completed": null}
+  },
+  "blockers": [],
+  "last_heartbeat": "2026-03-09T20:50:00",
+  "next_checkpoint": "run_data_download"
+}

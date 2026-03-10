@@ -1,0 +1,23 @@
+{
+  "candidates": [],
+  "counts": {
+    "total_detected": 0,
+    "known_recovered": 0,
+    "previously_discussed": 0,
+    "artifact_low_confidence": 0,
+    "uncataloged_candidate": 0
+  },
+  "registry_schema": {
+    "candidate_id": "string (e.g., C001)",
+    "ra": "float",
+    "dec": "float",
+    "sdss_objid": "string or null",
+    "anomaly_score": "float",
+    "embedding": "reference to file",
+    "label": "one of 4 categories",
+    "evidence_log": "array of evidence strings",
+    "checked_against": ["SIMBAD", "NED", "Galaxy Zoo", "arxiv"],
+    "review_status": "pending|in_review|complete",
+    "reviewer_notes": "string"
+  }
+}

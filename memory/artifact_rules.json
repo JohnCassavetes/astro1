@@ -1,0 +1,40 @@
+{
+  "artifact_rules": [
+    {
+      "id": "R1",
+      "name": "Edge artifacts",
+      "description": "Cutouts near image edges",
+      "detection": "Check if object near frame edge in raw image",
+      "action": "flag_low_confidence"
+    },
+    {
+      "id": "R2", 
+      "name": "Saturation",
+      "description": "Bright stars causing bleed",
+      "detection": "Check SATUR flag in photometry",
+      "action": "flag_low_confidence"
+    },
+    {
+      "id": "R3",
+      "name": "Cosmic rays",
+      "description": "Hot pixels not properly masked",
+      "detection": "Visual inspection + pixel statistics",
+      "action": "flag_low_confidence"
+    },
+    {
+      "id": "R4",
+      "name": "Deblending failures",
+      "description": "Multiple sources merged",
+      "detection": "Check deblend flags, visual inspection",
+      "action": "flag_low_confidence"
+    },
+    {
+      "id": "R5",
+      "name": "Poor seeing",
+      "description": "PSF too large",
+      "detection": "FWHM > 2.5 arcsec",
+      "action": "flag_low_confidence"
+    }
+  ],
+  "visual_inspection_required": true
+}

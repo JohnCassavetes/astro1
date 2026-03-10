@@ -1,0 +1,19 @@
+{
+  "queue": [
+    {"id": 2, "task": "Test SDSS data query", "priority": "high", "status": "pending", "agent": null},
+    {"id": 3, "task": "Literature search - anomaly detection methods", "priority": "medium", "status": "pending", "agent": null},
+    {"id": 4, "task": "Literature search - unusual galaxy catalogs", "priority": "medium", "status": "pending", "agent": null},
+    {"id": 5, "task": "Download sample galaxy dataset", "priority": "high", "status": "pending", "agent": null},
+    {"id": 6, "task": "Implement preprocessing pipeline", "priority": "high", "status": "pending", "agent": null},
+    {"id": 7, "task": "Implement embedding generation", "priority": "high", "status": "pending", "agent": null},
+    {"id": 8, "task": "Implement anomaly detection", "priority": "high", "status": "pending", "agent": null},
+    {"id": 9, "task": "Implement novelty filtering", "priority": "medium", "status": "pending", "agent": null},
+    {"id": 10, "task": "Candidate review and classification", "priority": "medium", "status": "pending", "agent": null},
+    {"id": 11, "task": "Create figures", "priority": "low", "status": "pending", "agent": null},
+    {"id": 12, "task": "Draft paper sections", "priority": "low", "status": "in_progress", "agent": null}
+  ],
+  "completed": [
+    {"id": 1, "task": "Create all Python pipeline scripts", "completed_at": "2026-03-09T20:50:00"}
+  ],
+  "last_updated": "2026-03-09"
+}

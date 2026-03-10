@@ -1,0 +1,15 @@
+astropy
+numpy
+scipy
+scikit-learn
+torch
+torchvision
+pillow
+matplotlib
+seaborn
+pandas
+requests
+tqdm
+astroquery
+reproject
+photutils

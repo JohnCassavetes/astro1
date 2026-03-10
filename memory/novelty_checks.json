@@ -1,0 +1,25 @@
+{
+  "novelty_checks": {
+    "databases": [
+      {"name": "SIMBAD", "url": "http://simbad.u-strasbg.fr", "method": "cone_search", "checked": false},
+      {"name": "NED", "url": "https://ned.ipac.caltech.edu", "method": "cone_search", "checked": false},
+      {"name": "VizieR", "url": "https://vizier.cds.unistra.fr", "method": "cone_search", "checked": false}
+    ],
+    "literature": {
+      "arxiv_searched": false,
+      "ads_searched": false,
+      "keywords_used": []
+    },
+    "catalogs_to_crossmatch": [
+      "Galaxy Zoo 1 & 2",
+      "Ring Galaxy Catalogs",
+      "Peculiar Galaxy Arp Atlas",
+      "Merger catalogs"
+    ]
+  },
+  "confidence_thresholds": {
+    "radius_arcsec": 5.0,
+    "mag_tolerance": 1.0,
+    "minimum_evidence": 2
+  }
+}
