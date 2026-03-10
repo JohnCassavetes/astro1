@@ -1,22 +1,49 @@
 {
-  "source": "SDSS DR17",
+  "source": "SDSS_DR19_SkyServer_wget",
   "query_strategy": "to_be_defined",
   "selection_criteria": {
     "object_type": "galaxy",
     "photoobj_flags": "CLEAN",
-    "mag_r_range": [15, 21],
+    "mag_r_range": [
+      15,
+      21
+    ],
     "size_criteria": "petroR50_r > 2 arcsec",
     "sample_size_target": 10000
   },
   "download_method": "astroquery",
-  "fields": ["ra", "dec", "objid", "run", "rerun", "camcol", "field", "petroR50_r", "petroMag_r", "modelMag_g", "modelMag_r", "modelMag_i"],
+  "fields": [
+    "ra",
+    "dec",
+    "objid",
+    "run",
+    "rerun",
+    "camcol",
+    "field",
+    "petroR50_r",
+    "petroMag_r",
+    "modelMag_g",
+    "modelMag_r",
+    "modelMag_i"
+  ],
   "images": {
-    "bands": ["g", "r", "i"],
+    "bands": [
+      "g",
+      "r",
+      "i"
+    ],
     "cutout_size_arcsec": 30,
     "pixel_scale": 0.396,
     "cutout_pixels": 76
   },
-  "download_batches": [],
+  "download_batches": [
+    {
+      "timestamp": "2026-03-09 21:55:43",
+      "n_requested": 10,
+      "n_retrieved": 10,
+      "n_images_downloaded": 10
+    }
+  ],
   "checksums": {},
   "validation_passed": false
 }
