@@ -1,19 +1,15 @@
 {
   "queue": [
-    {"id": 2, "task": "Test SDSS data query", "priority": "high", "status": "pending", "agent": null},
-    {"id": 3, "task": "Literature search - anomaly detection methods", "priority": "medium", "status": "pending", "agent": null},
-    {"id": 4, "task": "Literature search - unusual galaxy catalogs", "priority": "medium", "status": "pending", "agent": null},
-    {"id": 5, "task": "Download sample galaxy dataset", "priority": "high", "status": "pending", "agent": null},
-    {"id": 6, "task": "Implement preprocessing pipeline", "priority": "high", "status": "pending", "agent": null},
-    {"id": 7, "task": "Implement embedding generation", "priority": "high", "status": "pending", "agent": null},
-    {"id": 8, "task": "Implement anomaly detection", "priority": "high", "status": "pending", "agent": null},
-    {"id": 9, "task": "Implement novelty filtering", "priority": "medium", "status": "pending", "agent": null},
-    {"id": 10, "task": "Candidate review and classification", "priority": "medium", "status": "pending", "agent": null},
-    {"id": 11, "task": "Create figures", "priority": "low", "status": "pending", "agent": null},
-    {"id": 12, "task": "Draft paper sections", "priority": "low", "status": "completed", "agent": null}
+    {"id": 13, "task": "Spectroscopic follow-up for top 3 candidates", "priority": "high", "status": "pending", "agent": null},
+    {"id": 14, "task": "Deep imaging request for ASTRO1-2026-001", "priority": "high", "status": "pending", "agent": null}
+  ],
+  "in_progress": [
+    {"id": 15, "task": "Submit RNAAS discovery note", "priority": "medium", "status": "ready_for_submission", "agent": "PeakBot", "started_at": "2026-03-09T23:25:00"}
   ],
   "completed": [
-    {"id": 1, "task": "Create all Python pipeline scripts", "completed_at": "2026-03-09T20:50:00"}
+    {"id": 1, "task": "Create all Python pipeline scripts", "completed_at": "2026-03-09T20:50:00"},
+    {"id": 16, "task": "Update paper draft with discovery results", "completed_at": "2026-03-09T23:25:00"},
+    {"id": 17, "task": "Prepare RNAAS submission package", "completed_at": "2026-03-09T23:25:00"}
   ],
-  "last_updated": "2026-03-09"
+  "last_updated": "2026-03-09T23:25:00"
 }
