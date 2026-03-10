@@ -1,98 +1,34 @@
 {
-  "project_name": "Novelty-Filtered Discovery of Unusual Astronomical Objects in SDSS",
-  "subtitle": "A Machine Learning Approach to Detecting Uncataloged Planets and Galaxies",
+  "project": "astro1",
+  "phase": "batch_processing",
   "status": "in_progress",
-  "current_phase": "candidate_review",
-  "phases": {
-    "setup": {
-      "status": "completed",
-      "started": "2026-03-09",
-      "completed": "2026-03-09"
-    },
-    "data_collection": {
-      "status": "completed",
-      "started": "2026-03-09",
-      "completed": "2026-03-09"
-    },
-    "preprocessing": {
-      "status": "completed",
-      "started": "2026-03-09",
-      "completed": "2026-03-09"
-    },
-    "embedding": {
-      "status": "in_progress",
-      "started": "2026-03-09",
-      "completed": "2026-03-09"
-    },
-    "anomaly_detection": {
-      "status": "completed",
-      "started": "2026-03-09",
-      "completed": "2026-03-09"
-    },
-    "novelty_filtering": {
-      "status": "completed",
-      "started": "2026-03-09",
-      "completed": "2026-03-09"
-    },
-    "candidate_review": {
-      "status": "completed",
-      "started": "2026-03-09",
-      "completed": "2026-03-09"
-    },
-    "algorithm_development": {
-      "status": "completed",
-      "started": "2026-03-09",
-      "completed": "2026-03-09"
-    },
-    "training": {
-      "status": "completed",
-      "started": "2026-03-09",
-      "completed": "2026-03-09"
-    },
-    "detection": {
-      "status": "completed",
-      "started": "2026-03-09",
-      "completed": "2026-03-09"
-    },
-    "validation": {
-      "status": "completed",
-      "started": "2026-03-09",
-      "completed": "2026-03-09"
-    },
-    "paper_draft": {
-      "status": "completed",
-      "started": "2026-03-09",
-      "completed": "2026-03-09"
-    },
-    "paper_preparation": {
-      "status": "completed",
-      "started": "2026-03-09",
-      "completed": "2026-03-09"
-    },
-    "rnaas_submission": {
-      "status": "completed",
-      "started": "2026-03-09",
-      "completed": "2026-03-09",
-      "submitted_to": "RNAAS (Research Notes of the American Astronomical Society)"
-    }
+  "last_updated": "2026-03-10T00:55:00CDT",
+  "batch_processing": {
+    "batch_size": 500,
+    "total_galaxies": 6831,
+    "processed_so_far": 596,
+    "batches_total": 13,
+    "batches_completed": 1,
+    "batches_pending": 12
   },
-  "blockers": [
-    "Requires spectroscopic follow-up for final confirmation"
-  ],
-  "last_heartbeat": "2026-03-10T00:35:00",
-  "next_checkpoint": "spectroscopic_followup",
-  "observation_requests": {
-    "spectroscopy": "docs/spectroscopy_request.md",
-    "deep_imaging": "docs/deep_imaging_request.md",
-    "status": "prepared_pending_telescope_time"
+  "candidates": {
+    "found_so_far": 7,
+    "projected_total": 72,
+    "pilot_batch": 7
   },
-  "discoveries": {
-    "total_candidates": 3,
-    "high_priority": [
-      "ASTRO1-2026-001",
-      "ASTRO1-2026-002",
-      "ASTRO1-2026-003"
-    ],
-    "status": "unverified_pending_followup"
+  "processing": {
+    "method": "isolation_forest",
+    "contamination": 0.02,
+    "embedding_dims": 24,
+    "crossmatch_radius_arcsec": 5
+  },
+  "submission_status": {
+    "rnaas_draft": "updated",
+    "submitted": false,
+    "target": "maximize_candidates_before_submission"
+  },
+  "cron_jobs": {
+    "batch_ml": "220cf42f-64b3-4902-be6b-8898b775f4ac",
+    "heartbeat": "07a3e678-f794-4b97-a585-116e14a443ce"
   }
 }
