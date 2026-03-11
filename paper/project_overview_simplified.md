@@ -33,8 +33,11 @@ Now we have 4,700 lists of numbers. We feed these into a machine learning algori
 ### Step 4: The Image Scanner (The Cool Part)
 Global anomalies just tell us an image is "weird," but not *why*. 
 To find specific phenomena—like galaxies merging—we wrote a custom Python script (`scan_raw_secondary_sources.py`). 
-This script operates directly on the image pixels. It isolates the background noise, finds the main bright blob in the center (the primary galaxy), and then scans the immediate surrounding area for a *second* distinct bright blob (a "buddy"). 
-If it finds a buddy that is bright enough and close enough, it flags the image as a multi-component system (likely a merger or a galaxy with a huge companion).
+This script operates directly on the image pixels. It isolates the background noise, finds the main bright blob in the center (the primary galaxy), and then scans the immediate surrounding area for a *second* distinct bright blob. 
+
+**The Precision Trick:** Astronomers almost never trust just brightness and proximity because foreground stars can look like companions. To solve this, we added a Photometric Color Filter. Interacting galaxies tend to be at the same distance, meaning they have similar colors. Our scanner explicitly compares the $g-r$ and $r-i$ color bands of both objects. If the secondary blob has a completely different color fingerprint, we discard it as a foreground star.
+
+If it finds a companion that is bright enough, close enough, and perfectly matches the primary galaxy's color, it flags the image as a high-confidence multi-component system.
 
 ## 📊 What We Found
 
@@ -42,7 +45,7 @@ In the past, anomaly detection in astronomy was often framed as "Look! We discov
 
 Instead of claiming fake discoveries, we built a highly reliable **Recommendation Engine**. 
 
-Out of 4,700 galaxies, our image scanner successfully flagged **605 galaxies** showing strong evidence of multiple components (buddies). We ranked these 605 candidates and generated overlay images showing exactly where the algorithm spotted the primary and secondary blobs. 
+Out of 4,700 galaxies, our image scanner successfully flagged **190 galaxies** showing strong evidence of multiple components. We ranked these 190 candidates and generated overlay images showing exactly where the algorithm spotted the primary and secondary blobs. 
 
 Astronomers can take our top 20 or top 50 ranked list and immediately request telescope time to study these merging systems, saving them hundreds of hours of manual searching.
 

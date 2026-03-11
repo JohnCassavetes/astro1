@@ -38,7 +38,7 @@ In this work, we pivot from the binary classification of ``discovery'' to a meth
     \item \textbf{Data Strategy:} We processed 4,690 quality-filtered SDSS Data Release 19 (DR19) galaxy images using a fully automated pipeline.
     \item \textbf{AI Methodology:} Extracted 2,048-dimensional morphological embeddings via a pre-trained ResNet50 convolutional neural network, ranked subsequently by an Isolation Forest algorithm.
     \item \textbf{Physical Scanning:} Formulated a deterministic image-plane scanner to identify distinct secondary components indicating physical interaction.
-    \item \textbf{Results:} Cataloged 605 multi-component systems, breaking down into 367 major merger candidates and 238 minor companion candidates.
+    \item \textbf{Results:} Cataloged 190 multi-component systems, breaking down into 111 major merger candidates and 79 minor companion candidates.
     \item \textbf{Impact:} Provided a reproducible, highly ranked target dataset for targeted spectroscopic follow-up, minimizing manual search overheads.
 \end{itemize}
 
@@ -82,6 +82,7 @@ The algorithm proceeds as follows:
     \item \textbf{Component Extraction:} Contiguous regions above the threshold undergo binary opening and closing to separate narrow bridges and fill small holes. We label all discrete connected components. Components with an area of fewer than 60 pixels are discarded to avoid high-frequency noise.
     \item \textbf{Primary Identification:} The primary object is identified as the most luminous component located within a central search radius ($R < 64$ pixels from the image center).
     \item \textbf{Secondary Flagging:} Secondary components are accepted if they meet the following criteria: separation from the primary centroid between 15 and 70 pixels, and an integrated flux of at least 15\% ($f_{\text{ratio}} \ge 0.15$) of the primary component's flux.
+    \item \textbf{Photometric Consistency Filter:} To further reduce contamination from foreground stars and chance background alignments, we implement an astrophysical heuristic based on proxy color bands. Because interacting galaxies typically operate at the same redshift and share stellar populations, their broad-band colors should be similar. For each candidate system, we calculate proxy $g-r$ and $r-i$ colors from the extracted RGB channels (corresponding to SDSS $g, r, i$ passbands). We enforce a strict color similarity by rejecting any candidate where the proxy color differences between the primary and secondary components exceed a threshold ($\Delta \text{color} < 0.2$). This significantly boosts the pipeline's precision by dynamically culling unmatched foreground/background objects without requiring expensive spectroscopic follow-up.
 \end{enumerate}
 
 Finally, an Isolation Forest evaluates features derived specifically from this image-plane scan (total components, secondary count, brightest secondary flux ratio, farthest secondary distance, and rotational asymmetry) to compute a targeted \texttt{secondary\_object\_score}.
@@ -92,12 +93,17 @@ Finally, an Isolation Forest evaluates features derived specifically from this i
 Applying the image-plane scanner to the 4,690 valid cutouts yielded highly structured results. The algorithm successfully identified multiple luminous components in a significant fraction of the data, effectively filtering out single, isolated ellipticals or standard spiral galaxies.
 \begin{itemize}
     \item \textbf{Valid JPGs scanned:} 4,690
-    \item \textbf{Flagged multi-component candidates:} 605
+    \item \textbf{Raw multi-component candidates (pre-filter):} 605
+    \item \textbf{High-confidence candidates (post-color filter):} 190
 \end{itemize}
-The scanner strongly flags close companions, dual-nucleus candidates, and late-stage mergers where tidal bridges might fall below the $7.0\sigma$ threshold while the distinct cores remain visible. Of the 605 flagged multi-component candidates, quantitative analysis of the secondary flux ratios reveals:
+Initially, the raw structural scanner identified 605 multi-component candidates based solely on flux thresholds and spatial proximity. However, as discussed in Section \ref{sec:methods}, optical detection alone is highly susceptible to foreground star contamination. 
+
+By applying the rigorous \textbf{Photometric Consistency Filter} (enforcing $\Delta \text{color} < 0.2$ in proxy $g-r$ and $r-i$ space), the pipeline successfully culled 415 false positives and chance alignments. This aggressively distilled the dataset down to \textbf{190 high-confidence candidates}. 
+
+Of these 190 surviving candidates, quantitative analysis of the secondary flux ratios reveals:
 \begin{itemize}
-    \item \textbf{367 major merger candidates} (secondary component flux is $\ge$ 50\% of the primary)
-    \item \textbf{238 minor companion candidates} (secondary component flux is between 15\% and 50\%)
+    \item \textbf{111 major merger candidates} (secondary component flux is $\ge$ 50\% of the primary)
+    \item \textbf{79 minor companion candidates} (secondary component flux is between 15\% and 50\%)
 \end{itemize}
 These distinct sub-populations demonstrate the pipeline's sensitivity across a range of structural mass ratios.
 
@@ -111,11 +117,11 @@ Table \ref{tab:candidates} presents the top candidates ranked by their \texttt{s
 \colhead{ObjID} & \colhead{RA (deg)} & \colhead{Dec (deg)} & \colhead{Secondary Count} & \colhead{Max Flux Ratio} & \colhead{Scan Score}
 }
 \startdata
-12376400000000006791 & 305.5417 & 8.2974 & 7 & 1.509 & 0.7743 \\
-12376400000000001618 & 173.2024 & 43.3572 & 6 & 7.328 & 0.7675 \\
-12376400000000000518 & 5.5122 & -3.6462 & 6 & 1.526 & 0.7574 \\
-12376400000000000578 & 316.3732 & -2.7793 & 6 & 0.642 & 0.7156 \\
-12376400000000006823 & 302.0423 & 12.5660 & 5 & 0.428 & 0.7676 \\
+12376400000000001338 & 218.9912 & 67.5873 & 4 & 0.958 & 0.7729 \\
+12376400000000006031 & 301.0046 & 10.1879 & 4 & 0.570 & 0.7467 \\
+12376400000000001158 & 207.1380 & 41.4644 & 4 & 0.637 & 0.7431 \\
+12376400000000006823 & 302.0423 & 12.5660 & 3 & 0.428 & 0.7975 \\
+12376400000000000518 & 5.5122 & -3.6462 & 3 & 1.526 & 0.7950 \\
 \enddata
 \tablecomments{Data subset shown. The full catalog of ranked candidates is available in the supplementary material.}
 \end{deluxetable*}
@@ -136,7 +142,7 @@ Our methodology highlights the advantage of pairing deep, black-box embedding sp
 
 While the ResNet50 + Isolation Forest branch identifies objects that ``look weird'' structurally, the secondary component scanner specifically targets physical interaction indicators. By defining strict thresholds (minimum 15\% flux ratio, separation bounds), the scanner minimizes flagging foreground stars or faint background galaxies, focusing instead on substantial companion structures likely to be physically associated or part of a merging system segment.
 
-Crucially, by framing this effort as a \textit{candidate generation pipeline} rather than a claim of definitive discovery, we alleviate the burden of exhaustive, potentially incomplete cross-matching against historical databases. SDSS \texttt{objid} entries are, by definition, survey-detected objects; proving they are entirely absent from the literature is difficult. Instead, providing a rigorously ranked subset of 605 multi-component objects out of approx. 4,700 allows observational astronomers to prioritize targets for integral field spectroscopy (IFS) or high-resolution follow-up imaging without having to manually sift through the larger survey footprint.
+Crucially, by framing this effort as a \textit{candidate generation pipeline} rather than a claim of definitive discovery, we alleviate the burden of exhaustive, potentially incomplete cross-matching against historical databases. SDSS \texttt{objid} entries are, by definition, survey-detected objects; proving they are entirely absent from the literature is difficult. Instead, providing a rigorously ranked subset of 190 multi-component objects out of approx. 4,700 allows observational astronomers to prioritize targets for integral field spectroscopy (IFS) or high-resolution follow-up imaging without having to manually sift through the larger survey footprint.
 
 \section{Conclusion} \label{sec:conclusion}
 

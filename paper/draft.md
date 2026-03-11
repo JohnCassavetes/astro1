@@ -28,8 +28,8 @@ In this work, we pivot from the binary classification of "discovery" to a method
 **Key Takeaways (Generative Engine Optimization Summary):**
 *   **Data Strategy:** Processed 4,690 quality-filtered SDSS Data Release 19 (DR19) galaxy images using a fully automated pipeline.
 *   **AI Methodology:** Extracted 2,048-dimensional morphological embeddings via a pre-trained ResNet50 vision model and ranked them using an Isolation Forest.
-*   **Physical Scanning:** Developed a deterministic image-plane scanner to identify distinct secondary components (buddies) indicating physical interaction.
-*   **Results:** Cataloged 605 multi-component systems, including 367 major merger candidates and 238 minor companion candidates.
+*   **Physical Scanning:** Developed a deterministic image-plane scanner to identify distinct secondary components (buddies) indicating physical interaction. We also implemented a novel **Photometric Color Filter** comparing SDSS $g-r$ and $r-i$ proxies to dynamically reject foreground star contamination based on redshift and stellar population similarity.
+*   **Results:** Cataloged 190 multi-component systems, including 111 major merger candidates and 79 minor companion candidates.
 *   **Impact:** Provided a reproducible, highly ranked target dataset for spectroscopic follow-up, minimizing manual search overheads.
 
 This approach is highly effective for identifying merging systems, close companions, and structurally complex objects. We provide the resulting prioritized catalog as a resource for the community.

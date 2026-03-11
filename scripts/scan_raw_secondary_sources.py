@@ -39,6 +39,7 @@ MAX_SECONDARY_DISTANCE = 70.0
 SECONDARY_FLUX_RATIO = 0.15
 THRESHOLD_SIGMA = 7.0
 MAX_OVERLAYS = 20
+MAX_COLOR_DIFF = 0.2  # Photometric color consistency threshold
 
 
 @dataclass
@@ -50,6 +51,8 @@ class Component:
     centroid_y: float
     center_distance: float
     bbox: tuple[int, int, int, int]
+    g_r: float = 0.0
+    r_i: float = 0.0
 
 
 def valid_raw_paths() -> Iterable[Path]:
@@ -61,6 +64,10 @@ def valid_raw_paths() -> Iterable[Path]:
 def load_gray(path: Path) -> np.ndarray:
     with Image.open(path) as im:
         return np.asarray(im.convert("L"), dtype=np.float32)
+
+def load_rgb(path: Path) -> np.ndarray:
+    with Image.open(path) as im:
+        return np.asarray(im.convert("RGB"), dtype=np.float32)
 
 
 def robust_background(gray: np.ndarray) -> tuple[float, float]:
@@ -78,7 +85,7 @@ def robust_background(gray: np.ndarray) -> tuple[float, float]:
     return median, sigma
 
 
-def extract_components(gray: np.ndarray) -> list[Component]:
+def extract_components(gray: np.ndarray, rgb: np.ndarray) -> list[Component]:
     bg, sigma = robust_background(gray)
     smooth = ndimage.gaussian_filter(gray, sigma=2.0)
     threshold = bg + THRESHOLD_SIGMA * sigma
@@ -109,6 +116,15 @@ def extract_components(gray: np.ndarray) -> list[Component]:
         centroid_y = float(np.average(ys, weights=weights))
         center_distance = float(np.hypot(centroid_x - cx_img, centroid_y - cy_img))
         bbox = (int(xs.min()), int(ys.min()), int(xs.max()), int(ys.max()))
+        
+        # Color proxies (SDSS mapping: B->g, G->r, R->i)
+        g_flux = float(np.mean(rgb[ys, xs, 2]) + 1.0)
+        r_flux = float(np.mean(rgb[ys, xs, 1]) + 1.0)
+        i_flux = float(np.mean(rgb[ys, xs, 0]) + 1.0)
+        
+        g_r = float(-2.5 * np.log10(g_flux / r_flux))
+        r_i = float(-2.5 * np.log10(r_flux / i_flux))
+
         components.append(
             Component(
                 label=label,
@@ -118,6 +134,8 @@ def extract_components(gray: np.ndarray) -> list[Component]:
                 centroid_y=centroid_y,
                 center_distance=center_distance,
                 bbox=bbox,
+                g_r=g_r,
+                r_i=r_i,
             )
         )
 
@@ -150,12 +168,19 @@ def secondary_components(primary: Component | None, components: list[Component])
             continue
         separation = float(np.hypot(comp.centroid_x - primary.centroid_x, comp.centroid_y - primary.centroid_y))
         flux_ratio = comp.flux / (primary.flux + 1e-6)
+        
+        # Color consistency filter
+        color_diff_g_r = abs(primary.g_r - comp.g_r)
+        color_diff_r_i = abs(primary.r_i - comp.r_i)
+
         if (
             separation >= MIN_SEPARATION
             and separation <= MAX_SECONDARY_DISTANCE
             and comp.center_distance <= MAX_SECONDARY_DISTANCE
             and comp.area >= MIN_AREA
             and flux_ratio >= SECONDARY_FLUX_RATIO
+            and color_diff_g_r < MAX_COLOR_DIFF
+            and color_diff_r_i < MAX_COLOR_DIFF
         ):
             out.append(comp)
     return sorted(out, key=lambda c: c.flux, reverse=True)
@@ -208,10 +233,11 @@ def main() -> None:
         objid = path.stem
         try:
             gray = load_gray(path)
+            rgb = load_rgb(path)
         except Exception:
             continue
 
-        comps = extract_components(gray)
+        comps = extract_components(gray, rgb)
         primary = choose_primary(comps)
         secondaries = secondary_components(primary, comps)
         bg, sigma = robust_background(gray)
@@ -248,6 +274,8 @@ def main() -> None:
                             "centroid_y": round(c.centroid_y, 1),
                             "center_distance": round(c.center_distance, 1),
                             "bbox": c.bbox,
+                            "g_r": round(c.g_r, 3),
+                            "r_i": round(c.r_i, 3),
                         }
                         for c in comps
                     ]
@@ -297,7 +325,8 @@ def main() -> None:
     for _, row in overlay_candidates.iterrows():
         path = Path(row["raw_path"])
         gray = load_gray(path)
-        comps = extract_components(gray)
+        rgb = load_rgb(path)
+        comps = extract_components(gray, rgb)
         primary = choose_primary(comps)
         secondaries = secondary_components(primary, comps)
         overlay_path = OVERLAY_DIR / f"{row['objid']}_overlay.png"
