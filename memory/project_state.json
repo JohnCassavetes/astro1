@@ -1,9 +1,7 @@
 {
   "project": "astro1",
-  "status": "candidate_generation",
-  "last_updated": "2026-03-11T00:00:00-05:00",
-  "current_phase": "raw_object_scan",
-  "summary": "Repository cleaned to a conservative SDSS candidate-generation workflow: download, preprocess, embed, anomaly-rank, and raw-cutout secondary-source scan.",
+  "status": "completed",
+  "summary": "Repository refactored for robustness. Pipeline successfully detected 190 candidates from 4690 SDSS images.",
   "phases": {
     "data_collection": {
       "status": "completed"

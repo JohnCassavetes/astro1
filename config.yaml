@@ -1,0 +1,53 @@
+# Astro1 Pipeline Configuration
+
+paths:
+  # Data directories
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  metadata: "data/metadata"
+  
+  # Output directories
+  results: "results/final"
+  intermediate: "results/intermediate"
+  experimental: "results/experimental"
+  
+  # Models and memory
+  models: "models"
+  logs: "logs"
+  memory: "memory"
+
+pipeline:
+  # SDSS query parameters
+  sdss:
+    ra_min: 150
+    ra_max: 200
+    dec_min: 0
+    dec_max: 50
+    limit: 5000 # Set high for full run
+    img_size: 256
+    scale: 0.396
+  
+  # Image processing
+  preprocessing:
+    target_size: [256, 256]
+    min_filesize_kb: 5
+    
+  # Feature extraction
+  embeddings:
+    batch_size: 32
+    num_workers: 4
+    
+  # Anomaly detection
+  anomaly:
+    contamination: 0.1
+    n_estimators: 100
+    
+  # Image scanning (photometric filtering)
+  scanner:
+    sigma_threshold: 7.0
+    min_component_area: 60
+    min_flux_ratio: 0.15
+    max_color_diff: 0.2
+    search_radius: 64
+    separation_min: 15
+    separation_max: 70

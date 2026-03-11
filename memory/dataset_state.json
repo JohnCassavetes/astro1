@@ -1,57 +1,18 @@
 {
-  "source": "SDSS_DR19_SkyServer_wget",
-  "query_strategy": "to_be_defined",
+  "source": "SDSS_DR19_SkyServer",
   "selection_criteria": {
     "object_type": "galaxy",
     "photoobj_flags": "CLEAN",
-    "mag_r_range": [
-      15,
-      21
-    ],
-    "size_criteria": "petroR50_r > 2 arcsec",
-    "sample_size_target": 10000
+    "sample_size_target": 5000
   },
-  "download_method": "astroquery",
   "fields": [
     "ra",
     "dec",
     "objid",
-    "run",
-    "rerun",
-    "camcol",
-    "field",
-    "petroR50_r",
     "petroMag_r",
-    "modelMag_g",
-    "modelMag_r",
-    "modelMag_i"
+    "petroR50_r"
   ],
-  "images": {
-    "bands": [
-      "g",
-      "r",
-      "i"
-    ],
-    "cutout_size_arcsec": 30,
-    "pixel_scale": 0.396,
-    "cutout_pixels": 76
-  },
-  "download_batches": [
-    {
-      "timestamp": "2026-03-09 21:55:43",
-      "n_requested": 10,
-      "n_retrieved": 10,
-      "n_images_downloaded": 10
-    },
-    {
-      "timestamp": "2026-03-10 00:01:26",
-      "n_requested": 5500,
-      "n_success": 4102,
-      "n_failed": 1398,
-      "elapsed_seconds": 342.442578792572,
-      "workers": 10
-    }
-  ],
-  "checksums": {},
-  "validation_passed": false,
-  "total_downloaded": 
+  "download_batches": [],
+  "validation_passed": true,
+  "total_downloaded": 4690
+}

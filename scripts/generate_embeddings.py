@@ -159,7 +159,7 @@ def main():
     
     update_project_state("embedding", "completed")
     print(f"\nStage 3 complete. Embeddings shape: {df['embedding_dim'].iloc[0]}")
-    print(f"Saved to: {RESULTS_EMB}/galaxy_embeddings.npy")
+    logger.info(f"Saved to: {RESULTS_EMB}/galaxy_embeddings.npy")
 
 if __name__ == "__main__":
     main()

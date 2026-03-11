@@ -1,0 +1,3 @@
+Total flagged: 190
+Major mergers: 111
+Minor companions: 79
