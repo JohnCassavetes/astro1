@@ -35,7 +35,7 @@ python scripts/scan_raw_secondary_sources.py
 2. **Preprocess** (`preprocess_images.py`) - Load valid cutouts, resize, normalize, quality screen
 3. **Embed** (`generate_embeddings.py`) - ResNet50 feature extraction
 4. **Detect** (`detect_anomalies.py`) - Isolation Forest anomaly ranking
-5. **Raw Scan** (`scan_raw_secondary_sources.py`) - Image-plane detection of secondary bright components
+5. **Raw Scan** (`scan_raw_secondary_sources.py`) - Image-plane detection of secondary bright components with photometric color consistency filtering.
 
 ## Memory Files
 

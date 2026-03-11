@@ -66,7 +66,11 @@ But astronomers almost never trust just brightness and proximity; foreground sta
 
 \section{What We Found} \label{sec:results}
 
-Our pipeline processed the 4,690 images totally autonomously. In the end, the image scanner successfully flagged \textbf{190 galaxies} showing strong evidence of having a companion or being in the middle of a merger. 
+Our pipeline processed the 4,690 images totally autonomously. Initially, the raw image scanner successfully flagged \textbf{605 galaxies} showing strong evidence of having a companion based on brightness and proximity. 
+
+However, we knew that relying purely on brightness and proximity would mean accidentally including a lot of foreground stars that just happen to look like they are right next to our galaxies. When we turned on the \textbf{Photometric Color Consistency Filter}, the algorithm successfully threw out 415 of those images as optical illusions or chance alignments. 
+
+This left us with an incredibly pure, high-confidence list of \textbf{190 galaxies} that are actively in the middle of a merger or interacting with a companion. 
 
 To prove the pipeline works, it automatically draws boxes over the images it flags. As shown in Figure \ref{fig:overlays}, the code perfectly outlines the main central galaxy (in red) and the distinct secondary system (in cyan) crashing into it. 
 
