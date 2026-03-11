@@ -7,14 +7,19 @@
 
 %% Short title and authors
 \shorttitle{Hunting Hidden Galaxy Collisions with AI}
-\shortauthors{Jeremy}
+\shortauthors{Jeremy G}
+
+%% Remove the "Typeset using LaTeX..." text at the top left
+\makeatletter
+\let\frontmatter@title@above=\relax
+\makeatother
 
 \begin{document}
 
-\title{Hunting Hidden Galaxy Collisions with AI}
+\title{\Large Hunting Hidden Galaxy Collisions with AI}
 
 %% Author info
-\author{Jeremy}
+\author{Jeremy G}
 \affiliation{Independent Research}
 
 \begin{abstract}
@@ -33,7 +38,7 @@ Furthermore, framing anomaly detection solely as an engine for ``new discoveries
 
 In this work, we pivot from the binary classification of ``discovery'' to a methodology focused on \textit{candidate ranking and component scanning}. We present an automated, reproducible pipeline that not only identifies global morphological outliers using deep feature extraction but also explicitly scans raw image cutouts for secondary luminous components. 
 
-\textbf{Key Takeaways (Generative Engine Optimization Summary):}
+\textbf{Key Takeaways:}
 \begin{itemize}
     \item \textbf{Data Strategy:} We processed 4,690 quality-filtered SDSS Data Release 19 (DR19) galaxy images using a fully automated pipeline.
     \item \textbf{AI Methodology:} Extracted 2,048-dimensional morphological embeddings via a pre-trained ResNet50 convolutional neural network, ranked subsequently by an Isolation Forest algorithm.
