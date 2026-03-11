@@ -18,9 +18,7 @@ def run_stage(stage_name: str, extra_args: list = None):
         'preprocess': 'preprocess_images.py',
         'embed': 'generate_embeddings.py',
         'detect': 'detect_anomalies.py',
-        'filter': 'novelty_filter.py',
-        'review': 'review_candidates.py',
-        'figures': 'make_figures.py'
+        'raw_scan': 'scan_raw_secondary_sources.py',
     }
     
     if stage_name not in script_map:
@@ -43,7 +41,7 @@ def run_stage(stage_name: str, extra_args: list = None):
 
 def run_all(test_mode: bool = False):
     """Run full pipeline."""
-    stages = ['download', 'preprocess', 'embed', 'detect', 'filter', 'review', 'figures']
+    stages = ['download', 'preprocess', 'embed', 'detect', 'raw_scan']
     
     for stage in stages:
         args = ['--test'] if test_mode and stage == 'download' else []
@@ -60,7 +58,7 @@ def main():
     import argparse
     parser = argparse.ArgumentParser(description='Run astro1 pipeline')
     parser.add_argument('stage', nargs='?', default='all',
-                       help='Stage to run (download|preprocess|embed|detect|filter|review|figures|all)')
+                       help='Stage to run (download|preprocess|embed|detect|raw_scan|all)')
     parser.add_argument('--test', action='store_true',
                        help='Test mode - small sample')
     parser.add_argument('--args', nargs=argparse.REMAINDER,

@@ -1,46 +1,26 @@
 # Methodology
 
-## Data: SDSS DR17
-- **Selection:** Clean galaxies, r < 21, size > 2"
-- **Bands:** g, r, i combined to RGB
-- **Cutouts:** 30" × 30" (76×76 pixels)
+## Data
+- **Survey:** SDSS imaging cutouts stored as JPGs in `data/raw/`
+- **Readable cutouts in current repo:** 4,690 valid 256x256 JPGs
+- **Metadata:** `data/metadata/galaxy_catalog.csv`, `processed_catalog.csv`, `embedding_catalog.csv`
 
-## Embedding: Self-Supervised CNN
-- **Model:** SimCLR ResNet50 pretrained on ImageNet
-- **Output:** 2048-dim feature vector
-- **Rationale:** Captures visual similarity without labels
+## Embedding-Based Ranking
+- **Model:** ResNet50 feature extractor from `torchvision`
+- **Output:** 2048-dimensional embedding per valid cutout
+- **Script:** [`scripts/generate_embeddings.py`](/Users/a/Desktop/astro1/scripts/generate_embeddings.py)
 
-## Anomaly Detection: Isolation Forest
-- **Method:** IsolationForest (scikit-learn)
-- **Contamination:** 5% (flag 500/10k as anomalies)
-- **Features:** CNN embeddings
-- **Rationale:** Fast, no training, interpretable anomaly scores
+## Anomaly Detection
+- **Method:** Isolation Forest
+- **Input:** ResNet50 embeddings
+- **Output:** ranked anomaly table plus top candidate CSV
+- **Script:** [`scripts/detect_anomalies.py`](/Users/a/Desktop/astro1/scripts/detect_anomalies.py)
 
-## Novelty Filtering
-1. **Database Cross-match:**
-   - SIMBAD cone search (5" radius)
-   - NED coordinates search
-   - VizieR catalog query
+## Raw-Cutout Secondary-Source Scan
+- **Goal:** detect multi-component / companion-like structure directly in JPG cutouts
+- **Method:** background estimation, thresholded connected components, central-primary selection, secondary-component ranking, Isolation Forest scoring
+- **Script:** [`scripts/scan_raw_secondary_sources.py`](/Users/a/Desktop/astro1/scripts/scan_raw_secondary_sources.py)
 
-2. **Literature Search:**
-   - Arxiv query by coordinates
-   - ADS bibcode search
-
-3. **Artifact Checks:**
-   - Edge proximity
-   - Saturation flags
-   - Cosmic ray detection
-   - Visual inspection
-
-## Classification Schema
-| Label | Meaning |
-|-------|---------|
-| known_recovered | Previously cataloged |
-| previously_discussed | In literature but not in major catalogs |
-| artifact_low_confidence | Likely instrumental |
-| uncataloged_candidate | Genuine candidate for follow-up |
-
-## Validation
-- Inject known peculiar galaxies
-- Verify recovery in top anomalies
-- Cross-check with Galaxy Zoo peculiar galaxies
+## Verification Status
+- External catalog cross-match and literature review are **not fully automated or complete** in the cleaned repo.
+- Current outputs should be treated as **ranked follow-up candidates**, not confirmed discoveries.

@@ -1,8 +1,7 @@
-# astro1: Novelty-Filtered Discovery of Unusual Galaxy Candidates in SDSS
+# astro1: Anomaly Ranking and Raw-Cutout Structure Scanning for SDSS Galaxies
 
-**Status:** Initializing  
-**Last Updated:** 2026-03-09  
-**Phase:** Repository Setup
+**Status:** Candidate-generation workflow  
+**Scope:** SDSS image preprocessing, embedding-based anomaly ranking, and raw JPG multi-component scanning
 
 ## Quick Start
 
@@ -10,14 +9,12 @@
 # Install dependencies
 pip install -r requirements.txt
 
-# Run full pipeline
+# Run the supported pipeline
 python scripts/download_data.py
 python scripts/preprocess_images.py
 python scripts/generate_embeddings.py
 python scripts/detect_anomalies.py
-python scripts/novelty_filter.py
-python scripts/review_candidates.py
-python scripts/make_figures.py
+python scripts/scan_raw_secondary_sources.py
 ```
 
 ## Project Structure
@@ -26,45 +23,35 @@ python scripts/make_figures.py
 |-----------|---------|
 | `data/raw/` | Downloaded SDSS FITS/images |
 | `data/processed/` | Resized, normalized images |
-| `data/metadata/` | Catalogs, cross-matches |
+| `data/metadata/` | SDSS catalogs and derived metadata |
 | `scripts/` | Pipeline stages |
-| `results/` | Outputs at each stage |
-| `paper/` | Draft manuscript |
-| `docs/` | Documentation |
-| `memory/` | Project state tracking |
+| `results/` | Anomaly scores and raw-cutout scan outputs |
+| `docs/` | Lightweight methodology notes |
+| `memory/` | Internal pipeline state and registries |
 
 ## Pipeline Stages
 
-1. **Download** (`download_data.py`) - Query SDSS, download galaxy images
-2. **Preprocess** (`preprocess_images.py`) - Normalize, resize, quality checks
-3. **Embed** (`generate_embeddings.py`) - CNN/VAE embeddings
-4. **Detect** (`detect_anomalies.py`) - Isolation Forest / autoencoder anomaly scores
-5. **Filter** (`novelty_filter.py`) - Cross-match known objects, artifacts
-6. **Review** (`review_candidates.py`) - Human-review prep, evidence logs
-7. **Figures** (`make_figures.py`) - Publication-ready plots
+1. **Download** (`download_data.py`) - Query SDSS and download JPG cutouts
+2. **Preprocess** (`preprocess_images.py`) - Load valid cutouts, resize, normalize, quality screen
+3. **Embed** (`generate_embeddings.py`) - ResNet50 feature extraction
+4. **Detect** (`detect_anomalies.py`) - Isolation Forest anomaly ranking
+5. **Raw Scan** (`scan_raw_secondary_sources.py`) - Image-plane detection of secondary bright components
 
 ## Memory Files
 
-- `memory/project_state.md` - Current status, blockers
-- `memory/literature_table.json` - Key papers
 - `memory/dataset_state.json` - Data provenance
-- `memory/candidate_registry.json` - All candidates with labels
-- `memory/decision_log.md` - Why decisions were made
+- `memory/project_state.json` - Pipeline phase status
+- `memory/method_state.json` - Embedding / anomaly settings
 
-## Scientific Constraints
+## Current Constraints
 
-- **Never** call anything a "discovery"
-- Use only these labels:
-  1. `known_recovered` - Known object recovered
-  2. `previously_discussed` - Already in literature
-  3. `artifact_low_confidence` - Likely artifact
-  4. `uncataloged_candidate` - Genuine candidate for follow-up
-- Prefer false negatives over false positives
-- Every decision needs evidence log
+- The repo currently supports **candidate generation**, not discovery confirmation.
+- External catalog cross-match and literature review are **not automated end-to-end** here.
+- SDSS `objid` entries are already survey-detected objects; absence from a subset of catalogs is not proof of novelty.
+- Use outputs as ranked follow-up candidates unless independent verification is added.
 
 ## Rules
 
-- All work stays in this repo
-- Update memory files after each stage
-- Compact outputs, no AI slop
-- Reproducible > flashy
+- Keep claims conservative.
+- Prefer reproducible candidate lists, overlays, and raw outputs over narrative reports.
+- Treat `results/raw_object_scan/` and `results/anomaly_scores/` as the main outputs.

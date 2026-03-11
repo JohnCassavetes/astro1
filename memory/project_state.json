@@ -1,49 +1,24 @@
 {
   "project": "astro1",
-  "phase": "consolidation_complete",
-  "status": "publication_ready",
-  "last_updated": "2026-03-10T03:35:00CDT",
-  "batch_processing": {
-    "batch_size": 500,
-    "total_galaxies": 5433,
-    "processed_so_far": 5433,
-    "batches_total": 11,
-    "batches_completed": 11,
-    "batches_pending": 0
-  },
-  "candidates": {
-    "found_total": 7,
-    "pilot_batch": 7,
-    "expanded_sample": 0,
-    "status": "finalized"
-  },
-  "processing": {
-    "method": "isolation_forest",
-    "contamination": 0.02,
-    "embedding_dims": 24,
-    "crossmatch_radius_arcsec": 5
-  },
-  "submission_status": {
-    "rnaas_draft": "finalized",
-    "submitted": false,
-    "target": "RNAAS_submission_pending_user_review"
-  },
-  "cron_jobs": {
-    "batch_ml": "COMPLETE - REMOVED",
-    "heartbeat": "07a3e678-f794-4b97-a585-116e14a443ce"
-  },
-  "summary": "All 5,433 galaxies processed. 7 high-confidence uncataloged candidates identified (all from pilot batch). Detection rate: 0.13% in full sample vs 1.2% in pilot. RNAAS draft updated with final numbers. Ready for user review and submission.",
-  "verification_run": {
-    "timestamp": "20260310_115323",
-    "total_galaxies_processed": 4716,
-    "embedding_dimensions": 2048,
-    "embedding_method": "ResNet50-full",
-    "candidates_found": 27,
-    "previous_count": 7,
-    "discrepancy": "+20 candidates",
-    "matches_previous": false,
-    "overlap_with_original": "1 of 7 (D005 only)",
-    "likely_cause": "Different embedding dimensionality (24 vs 2048)",
-    "report_file": "VERIFICATION_REPORT.md"
+  "status": "candidate_generation",
+  "last_updated": "2026-03-11T00:00:00-05:00",
+  "current_phase": "raw_object_scan",
+  "summary": "Repository cleaned to a conservative SDSS candidate-generation workflow: download, preprocess, embed, anomaly-rank, and raw-cutout secondary-source scan.",
+  "phases": {
+    "data_collection": {
+      "status": "completed"
+    },
+    "preprocessing": {
+      "status": "completed"
+    },
+    "embedding": {
+      "status": "completed"
+    },
+    "anomaly_detection": {
+      "status": "completed"
+    },
+    "raw_object_scan": {
+      "status": "completed"
+    }
   }
 }
