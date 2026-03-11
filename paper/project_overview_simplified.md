@@ -1,4 +1,4 @@
-# Project Astro1: A Developer’s Guide to Finding Weird Galaxies
+# Hunting Hidden Galaxy Collisions with AI
 
 **What is this?** A simplified, "no-jargon" overview of what we built, why we built it, and how you can run it.
 

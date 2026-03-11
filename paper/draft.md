@@ -1,4 +1,4 @@
-# Draft: AI-Driven Anomaly Ranking and Component Detection in SDSS Galaxies
+# Draft: Hunting Hidden Galaxy Collisions with AI
 
 **Status:** 🚧 Draft v1.0 — METHODOLOGY FOCUS  
 **Target:** Astronomy & Computing (A&C) or PASP  

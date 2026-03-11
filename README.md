@@ -1,4 +1,4 @@
-# astro1: Anomaly Ranking and Raw-Cutout Structure Scanning for SDSS Galaxies
+# Hunting Hidden Galaxy Collisions with AI
 
 **Status:** Candidate-generation workflow  
 **Scope:** SDSS image preprocessing, embedding-based anomaly ranking, and raw JPG multi-component scanning
