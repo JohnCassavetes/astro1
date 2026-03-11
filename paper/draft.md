@@ -1,4 +1,4 @@
-# Draft: An Automated Pipeline for Ranking Morphological Anomalies and Detecting Secondary Components in SDSS Galaxies
+# Draft: AI-Driven Anomaly Ranking and Component Detection in SDSS Galaxies
 
 **Status:** 🚧 Draft v1.0 — METHODOLOGY FOCUS  
 **Target:** Astronomy & Computing (A&C) or PASP  
@@ -23,7 +23,16 @@ Historically, the detection of such rare objects relied heavily on visual inspec
 
 Furthermore, framing anomaly detection solely as an engine for "new discoveries" is fraught. Absence from specific astronomical databases (like SIMBAD or NED) is difficult to prove conclusively and is often an artifact of search radius or naming conventions rather than true novelty. 
 
-In this work, we pivot from the binary classification of "discovery" to a methodology focused on **candidate ranking and component scanning**. We present an automated, reproducible pipeline that not only identifies global morphological outliers using deep feature extraction but also explicitly scans raw image cutouts for secondary luminous components. This approach is highly effective for identifying merging systems, close companions, and structurally complex objects. We provide the resulting prioritized catalog as a resource for the community.
+In this work, we pivot from the binary classification of "discovery" to a methodology focused on **candidate ranking and component scanning**. We present an automated, reproducible pipeline that not only identifies global morphological outliers using deep feature extraction but also explicitly scans raw image cutouts for secondary luminous components.
+
+**Key Takeaways (Generative Engine Optimization Summary):**
+*   **Data Strategy:** Processed 4,690 quality-filtered SDSS Data Release 19 (DR19) galaxy images using a fully automated pipeline.
+*   **AI Methodology:** Extracted 2,048-dimensional morphological embeddings via a pre-trained ResNet50 vision model and ranked them using an Isolation Forest.
+*   **Physical Scanning:** Developed a deterministic image-plane scanner to identify distinct secondary components (buddies) indicating physical interaction.
+*   **Results:** Cataloged 605 multi-component systems, including 367 major merger candidates and 238 minor companion candidates.
+*   **Impact:** Provided a reproducible, highly ranked target dataset for spectroscopic follow-up, minimizing manual search overheads.
+
+This approach is highly effective for identifying merging systems, close companions, and structurally complex objects. We provide the resulting prioritized catalog as a resource for the community.
 
 ---
 

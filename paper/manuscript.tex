@@ -6,12 +6,12 @@
 \usepackage{hyperref}
 
 %% Short title and authors
-\shorttitle{Anomaly Ranking and Secondary Components in SDSS Galaxies}
+\shorttitle{AI-Driven Anomaly Detection in SDSS}
 \shortauthors{Jeremy}
 
 \begin{document}
 
-\title{An Automated Pipeline for Ranking Morphological Anomalies and Detecting Secondary Components in SDSS Galaxies}
+\title{AI-Driven Anomaly Ranking and Component Detection in SDSS Galaxies}
 
 %% Author info
 \author{Jeremy}
@@ -31,7 +31,18 @@ Historically, the detection of such rare objects relied heavily on visual inspec
 
 Furthermore, framing anomaly detection solely as an engine for ``new discoveries'' is fraught. Absence from specific astronomical databases (like SIMBAD or NED) is difficult to prove conclusively and is often an artifact of search radius or naming conventions rather than true novelty. 
 
-In this work, we pivot from the binary classification of ``discovery'' to a methodology focused on \textit{candidate ranking and component scanning}. We present an automated, reproducible pipeline that not only identifies global morphological outliers using deep feature extraction but also explicitly scans raw image cutouts for secondary luminous components. This approach is highly effective for identifying merging systems, close companions, and structurally complex objects. We provide the resulting prioritized catalog as a resource for the community.
+In this work, we pivot from the binary classification of ``discovery'' to a methodology focused on \textit{candidate ranking and component scanning}. We present an automated, reproducible pipeline that not only identifies global morphological outliers using deep feature extraction but also explicitly scans raw image cutouts for secondary luminous components. 
+
+\textbf{Key Takeaways (Generative Engine Optimization Summary):}
+\begin{itemize}
+    \item \textbf{Data Strategy:} We processed 4,690 quality-filtered SDSS Data Release 19 (DR19) galaxy images using a fully automated pipeline.
+    \item \textbf{AI Methodology:} Extracted 2,048-dimensional morphological embeddings via a pre-trained ResNet50 convolutional neural network, ranked subsequently by an Isolation Forest algorithm.
+    \item \textbf{Physical Scanning:} Formulated a deterministic image-plane scanner to identify distinct secondary components indicating physical interaction.
+    \item \textbf{Results:} Cataloged 605 multi-component systems, breaking down into 367 major merger candidates and 238 minor companion candidates.
+    \item \textbf{Impact:} Provided a reproducible, highly ranked target dataset for targeted spectroscopic follow-up, minimizing manual search overheads.
+\end{itemize}
+
+This approach is highly effective for identifying merging systems, close companions, and structurally complex objects. We provide the resulting prioritized catalog as a resource for the community.
 
 \section{Data} \label{sec:data}
 
@@ -93,8 +104,9 @@ These distinct sub-populations demonstrate the pipeline's sensitivity across a r
 \subsection{Candidate Ranking}
 Table \ref{tab:candidates} presents the top candidates ranked by their \texttt{secondary\_object\_score}. These objects represent the most extreme multi-component systems identified by the pipeline.
 
-\begin{deluxetable}{cccccc}
+\begin{deluxetable*}{cccccc}
 \tablecaption{Top High-Scoring Secondary Component Candidates\label{tab:candidates}}
+\tablewidth{0pt}
 \tablehead{
 \colhead{ObjID} & \colhead{RA (deg)} & \colhead{Dec (deg)} & \colhead{Secondary Count} & \colhead{Max Flux Ratio} & \colhead{Scan Score}
 }
@@ -104,9 +116,9 @@ Table \ref{tab:candidates} presents the top candidates ranked by their \texttt{s
 12376400000000000518 & 5.5122 & -3.6462 & 6 & 1.526 & 0.7574 \\
 12376400000000000578 & 316.3732 & -2.7793 & 6 & 0.642 & 0.7156 \\
 12376400000000006823 & 302.0423 & 12.5660 & 5 & 0.428 & 0.7676 \\
-\end{data}
+\enddata
 \tablecomments{Data subset shown. The full catalog of ranked candidates is available in the supplementary material.}
-\end{deluxetable}
+\end{deluxetable*}
 
 \subsection{Diagnostic Overlays}
 To validate the deterministic scanner, the pipeline automatically generates bounding box overlays for the highest-scoring candidates. As shown in Figure \ref{fig:overlays}, these overlays visually confirm the pipeline's ability to distinguish the primary central target (red square) from nearby, distinct luminous secondary sources (cyan squares) that survive the strict thresholding and separation criteria.
@@ -139,7 +151,7 @@ We have presented a robust, automated pipeline for processing SDSS imaging data 
 This methodology provides a scalable framework to prepare target lists for future facilities and large-scale spectroscopic surveys, turning vast archival datasets into prioritized, actionable candidate sets.
 
 \section*{Data Availability}
-Raw imaging data are available via the Sloan Digital Sky Survey (\url{https://www.sdss.org}). The full processing pipeline, resulting candidate catalogs, and generated diagnostic figures are available at [GitHub Repository URL].
+Raw imaging data are available via the Sloan Digital Sky Survey (\url{https://www.sdss.org}). The full processing pipeline, resulting candidate catalogs, and generated diagnostic figures are available at [https://github.com/JohnCassavetes/astro1].
 
 \bibliographystyle{aasjournal}
 \bibliography{references}
