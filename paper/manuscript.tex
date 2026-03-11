@@ -26,7 +26,7 @@
 We present a computational pipeline designed to systematically rank morphological anomalies and detect secondary luminous components in Sloan Digital Sky Survey (SDSS) galaxies. Moving beyond binary anomaly classification and catalog-dependent ``discovery'' claims, our approach combines deep feature extraction with image-plane scanning to provide a prioritized candidate list for follow-up observations. The pipeline operates in three stages: (1) extraction of 2,048-dimensional features using a pre-trained ResNet50 model; (2) global morphological anomaly ranking using an Isolation Forest; and (3) a custom image-plane scanning algorithm that robustly identifies secondary luminous components (e.g., merging companions, dual nuclei) within raw SDSS cutouts. Applying this pipeline to 4,690 quality-filtered SDSS Data Release 19 (DR19) galaxies, we successfully flag 605 raw multi-component candidates based on morphology. By integrating a subsequent photometric consistency filter (comparing proxy $g-r$ and $r-i$ colors) to discard foreground star contamination, we distill this set down to 190 highly-credible interacting candidates. We release our prioritized candidate catalog and overlay proofs to the community to facilitate targeted spectroscopic follow-up of merging systems and morphologically peculiar galaxies. All code and candidate catalogs are open-source and available on GitHub.
 \end{abstract}
 
-\keywords{methods: data analysis --- techniques: image processing --- galaxies: statistics --- catalogs}
+\keywords{methods: data analysis --- techniques: image processing --- galaxies: interactions --- artificial intelligence --- machine learning}
 
 \section{Introduction} \label{sec:intro}
 
