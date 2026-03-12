@@ -276,6 +276,10 @@ def main():
     if not args.catalog_only:
         df_downloads = download_cutouts(df, max_downloads=args.max_images)
         
+        # Ensure objid is treated as string for both dataframes to avoid merge errors
+        df['objid'] = df['objid'].astype(str)
+        df_downloads['objid'] = df_downloads['objid'].astype(str)
+        
         # Merge with catalog
         df = df.merge(df_downloads[['objid', 'downloaded', 'filepath']], 
                       on='objid', how='left')
