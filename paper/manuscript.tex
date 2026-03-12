@@ -122,17 +122,17 @@ Table \ref{tab:candidates} presents the top candidates ranked by their \texttt{s
 \colhead{ObjID} & \colhead{RA (deg)} & \colhead{Dec (deg)} & \colhead{Secondary Count} & \colhead{Max Flux Ratio} & \colhead{Scan Score}
 }
 \startdata
+12376400000000006823 & 302.0423 & 12.5660 & 3 & 0.428 & 0.7975 \\
+12376400000000000518 & 5.5122 & -3.6462 & 3 & 1.526 & 0.7950 \\
 12376400000000001338 & 218.9912 & 67.5873 & 4 & 0.958 & 0.7729 \\
 12376400000000006031 & 301.0046 & 10.1879 & 4 & 0.570 & 0.7467 \\
 12376400000000001158 & 207.1380 & 41.4644 & 4 & 0.637 & 0.7431 \\
-12376400000000006823 & 302.0423 & 12.5660 & 3 & 0.428 & 0.7975 \\
-12376400000000000518 & 5.5122 & -3.6462 & 3 & 1.526 & 0.7950 \\
 \enddata
 \tablecomments{Data subset shown. The full catalog of ranked candidates is available in the supplementary material.}
 \end{deluxetable*}
 
 \subsection{Diagnostic Overlays}
-To validate the deterministic scanner, the pipeline automatically generates bounding box overlays for the highest-scoring candidates. As shown in Figure \ref{fig:overlays}, these overlays visually confirm the pipeline's ability to distinguish the primary central target (red square) from nearby, distinct luminous secondary sources (cyan squares) that survive the strict thresholding and separation criteria.
+To validate the deterministic scanner, the pipeline automatically generates bounding box overlays for the highest-scoring candidates. Figure \ref{fig:overlays} is assembled directly from the top-ranked available overlays in the scan output table, ensuring the manuscript panel is derived from the same ranked results reported by the pipeline. These overlays visually confirm the pipeline's ability to distinguish the primary central target (red square) from nearby, distinct luminous secondary sources (cyan squares) that survive the strict thresholding and separation criteria.
 
 \begin{figure*}[ht!]
 \centering

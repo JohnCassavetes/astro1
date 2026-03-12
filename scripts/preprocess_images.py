@@ -21,7 +21,7 @@ try:
 except ImportError:
     ASTROPY_AVAILABLE = False
 
-from common import ensure_project_state, load_config, setup_logger, update_project_state
+from common import ensure_project_state, load_config, normalize_objid, setup_logger, update_project_state
 
 PROJECT_ROOT, config = load_config()
 logger = setup_logger(__file__, config, PROJECT_ROOT)
@@ -32,7 +32,7 @@ DATA_META = PROJECT_ROOT / config['paths']['metadata']
 MEMORY = PROJECT_ROOT / config['paths']['memory']
 
 # Preprocessing config
-TARGET_SIZE = (224, 224)  # ResNet input size
+TARGET_SIZE = tuple(config['pipeline']['preprocessing']['target_size'])
 
 def load_state() -> dict:
     return ensure_project_state(MEMORY)
@@ -108,13 +108,13 @@ def preprocess_catalog(catalog_path: Path) -> pd.DataFrame:
     """
     Preprocess all galaxies in catalog.
     """
-    df = pd.read_csv(catalog_path)
+    df = pd.read_csv(catalog_path, dtype={'objid': 'string'})
     print(f"Preprocessing {len(df)} galaxies...")
     
     processed_records = []
     
     for idx, row in tqdm(df.iterrows(), total=len(df)):
-        objid = str(int(row['objid']))
+        objid = normalize_objid(row['objid'])
         
         # Try to load image
         filepath = row.get('filepath')

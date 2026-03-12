@@ -57,6 +57,7 @@ make preprocess
 make embed
 # Or: python scripts/generate_embeddings.py
 ```
+This stage generates `results/intermediate/embeddings/galaxy_embeddings.npy`, which is required by Stage 4 and is expected to be regenerated in a fresh clone.
 
 **Isolation Forest Anomaly Ranking:**
 ```bash
@@ -81,6 +82,7 @@ make stats
 make figures
 # Or: python scripts/make_paper_figures.py
 ```
+This script builds the manuscript grid from the highest-ranked available overlays in `raw_object_scan.csv` and writes a `candidate_grid_manifest.csv` alongside the figure.
 
 ## Project Structure
 
@@ -96,7 +98,7 @@ make figures
 | `memory/` | Internal pipeline JSON state registries |
 
 ## Configuration
-All hardcoded paths and threshold variables have been moved to `config.yaml`. 
+Pipeline paths and tunable thresholds are configured through `config.yaml`. 
 If you wish to change the `sigma_threshold`, `max_color_diff`, or dataset size limits, edit this file before running `run_pipeline.py`.
 
 ## Current Constraints

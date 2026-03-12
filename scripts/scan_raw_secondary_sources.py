@@ -42,7 +42,7 @@ MAX_SECONDARY_DISTANCE = float(config['pipeline']['scanner']['separation_max'])
 SECONDARY_FLUX_RATIO = float(config['pipeline']['scanner']['min_flux_ratio'])
 THRESHOLD_SIGMA = float(config['pipeline']['scanner']['sigma_threshold'])
 MAX_OVERLAYS = 20
-MAX_COLOR_DIFF = 0.2  # Photometric color consistency threshold
+MAX_COLOR_DIFF = float(config['pipeline']['scanner']['max_color_diff'])
 
 
 @dataclass
@@ -361,7 +361,8 @@ def main() -> None:
         f"2. Threshold smoothed grayscale flux above background + {THRESHOLD_SIGMA:.1f} sigma.",
         "3. Label connected components and choose a primary source near the image center.",
         f"4. Count separated secondary components within {MAX_SECONDARY_DISTANCE:.0f} px of the center and >= {SECONDARY_FLUX_RATIO * 100:.0f}% of the primary flux.",
-        "5. Rank candidates with Isolation Forest over component-count and asymmetry features.",
+        f"5. Require proxy color consistency of |Δ(g-r)| and |Δ(r-i)| < {MAX_COLOR_DIFF:.2f}.",
+        "6. Rank candidates with Isolation Forest over component-count and asymmetry features.",
         "",
         "## Top Candidates",
         "",

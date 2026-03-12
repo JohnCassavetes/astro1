@@ -26,6 +26,7 @@ from PIL import Image
 from common import (
     ensure_dataset_state,
     load_config,
+    normalize_objid,
     save_json,
     setup_logger,
     update_project_state,
@@ -45,13 +46,6 @@ DEFAULT_HEADERS = {
     "User-Agent": "astro1-pipeline/1.0",
     "Accept": "text/csv,application/octet-stream,image/jpeg,*/*",
 }
-
-def normalize_objid(value: object) -> str:
-    """Preserve large SDSS objids exactly as strings."""
-    text = str(value).strip()
-    if text.endswith(".0"):
-        text = text[:-2]
-    return text
 
 def load_state() -> Dict:
     return ensure_dataset_state(MEMORY)

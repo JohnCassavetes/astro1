@@ -47,6 +47,13 @@ def get_project_root() -> Path:
     return Path(__file__).resolve().parent.parent
 
 
+def normalize_objid(value: object) -> str:
+    text = str(value).strip()
+    if text.endswith(".0"):
+        text = text[:-2]
+    return text
+
+
 def get_config_path(project_root: Path | None = None) -> Path:
     root = project_root or get_project_root()
     env_path = os.environ.get("ASTRO1_CONFIG")
