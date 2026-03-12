@@ -3,6 +3,8 @@
 **Status:** Candidate-generation workflow  
 **Scope:** SDSS image preprocessing, embedding-based anomaly ranking, and raw JPG multi-component scanning
 
+> Here's our [Notebook Demo!](https://colab.research.google.com/drive/1mqIj29SbJwmhd2JCg4Y4HjO60fQkCBlW?usp=sharing) to get the overall idea of the pipeline.
+
 ## Architecture Diagram
 
 ```mermaid
