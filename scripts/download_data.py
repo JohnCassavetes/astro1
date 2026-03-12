@@ -114,7 +114,7 @@ def query_sdss_skyserver(n_galaxies: int = 100) -> pd.DataFrame:
     WHERE p.type = 3
     AND p.petroMag_r BETWEEN 16 AND 20
     AND p.petroR50_r > 2
-    ORDER BY NEWID()
+    ORDER BY p.objid
     """
     
     # Try SkyServer REST API
