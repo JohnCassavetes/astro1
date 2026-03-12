@@ -6,9 +6,29 @@ Generate a multi-panel figure containing the top 4 candidates for the manuscript
 from pathlib import Path
 from PIL import Image
 
-ROOT = Path("~/Desktop/astro1").expanduser()
-OVERLAY_DIR = ROOT / "results" / "raw_object_scan" / "overlays"
-FIGURE_DIR = ROOT / "paper" / "figures"
+import logging
+import yaml
+
+# Load configuration and setup paths
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+with open(PROJECT_ROOT / "config.yaml", "r") as f:
+    config = yaml.safe_load(f)
+
+# Setup logging
+LOG_DIR = PROJECT_ROOT / config['paths']['logs']
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(LOG_DIR / f"{Path(__file__).stem}.log"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(Path(__file__).stem)
+
+OVERLAY_DIR = PROJECT_ROOT / config['paths']['results'] / "raw_object_scan" / "overlays"
+FIGURE_DIR = PROJECT_ROOT / config['paths']['results'] / "figures"
 
 FIGURE_DIR.mkdir(parents=True, exist_ok=True)
 

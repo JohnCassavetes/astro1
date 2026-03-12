@@ -26,18 +26,38 @@ from scipy import ndimage
 from sklearn.ensemble import IsolationForest
 
 
-ROOT = Path("~/Desktop/astro1").expanduser()
-RAW_DIR = ROOT / "data" / "raw"
-META_PATH = ROOT / "data" / "metadata" / "galaxy_catalog.csv"
-OUT_DIR = ROOT / "results" / "raw_object_scan"
+import logging
+import yaml
+
+# Load configuration and setup paths
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+with open(PROJECT_ROOT / "config.yaml", "r") as f:
+    config = yaml.safe_load(f)
+
+# Setup logging
+LOG_DIR = PROJECT_ROOT / config['paths']['logs']
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(LOG_DIR / f"{Path(__file__).stem}.log"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(Path(__file__).stem)
+
+RAW_DIR = PROJECT_ROOT / config['paths']['raw_data']
+META_PATH = PROJECT_ROOT / config['paths']['metadata'] / "galaxy_catalog.csv"
+OUT_DIR = PROJECT_ROOT / config['paths']['results'] / "raw_object_scan"
 OVERLAY_DIR = OUT_DIR / "overlays"
 
-MIN_AREA = 60
-PRIMARY_SEARCH_RADIUS = 64.0
-MIN_SEPARATION = 15.0
-MAX_SECONDARY_DISTANCE = 70.0
-SECONDARY_FLUX_RATIO = 0.15
-THRESHOLD_SIGMA = 7.0
+MIN_AREA = int(config['pipeline']['scanner']['min_component_area'])
+PRIMARY_SEARCH_RADIUS = float(config['pipeline']['scanner']['search_radius'])
+MIN_SEPARATION = float(config['pipeline']['scanner']['separation_min'])
+MAX_SECONDARY_DISTANCE = float(config['pipeline']['scanner']['separation_max'])
+SECONDARY_FLUX_RATIO = float(config['pipeline']['scanner']['min_flux_ratio'])
+THRESHOLD_SIGMA = float(config['pipeline']['scanner']['sigma_threshold'])
 MAX_OVERLAYS = 20
 MAX_COLOR_DIFF = 0.2  # Photometric color consistency threshold
 

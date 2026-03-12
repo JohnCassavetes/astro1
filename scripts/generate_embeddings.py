@@ -17,12 +17,31 @@ import torch
 import torch.nn as nn
 from torchvision import models, transforms
 
-# Paths
-ROOT = Path("~/Desktop/astro1").expanduser()
-DATA_PROC = ROOT / "data" / "processed"
-DATA_META = ROOT / "data" / "metadata"
-RESULTS_EMB = ROOT / "results" / "embeddings"
-MEMORY = ROOT / "memory"
+import logging
+import yaml
+
+# Load configuration and setup paths
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+with open(PROJECT_ROOT / "config.yaml", "r") as f:
+    config = yaml.safe_load(f)
+
+# Setup logging
+LOG_DIR = PROJECT_ROOT / config['paths']['logs']
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(LOG_DIR / f"{Path(__file__).stem}.log"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(Path(__file__).stem)
+
+DATA_PROC = PROJECT_ROOT / config['paths']['processed_data']
+DATA_META = PROJECT_ROOT / config['paths']['metadata']
+RESULTS_EMB = PROJECT_ROOT / config['paths']['intermediate'] / "embeddings"
+MEMORY = PROJECT_ROOT / config['paths']['memory']
 
 def load_state() -> dict:
     with open(MEMORY / "project_state.json") as f:

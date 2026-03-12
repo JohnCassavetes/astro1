@@ -13,13 +13,32 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 
-# Paths
-ROOT = Path("~/Desktop/astro1").expanduser()
-DATA_META = ROOT / "data" / "metadata"
-RESULTS_EMB = ROOT / "results" / "embeddings"
-RESULTS_ANOM = ROOT / "results" / "anomaly_scores"
-RESULTS_CAND = ROOT / "results" / "candidates"
-MEMORY = ROOT / "memory"
+import logging
+import yaml
+
+# Load configuration and setup paths
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+with open(PROJECT_ROOT / "config.yaml", "r") as f:
+    config = yaml.safe_load(f)
+
+# Setup logging
+LOG_DIR = PROJECT_ROOT / config['paths']['logs']
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(LOG_DIR / f"{Path(__file__).stem}.log"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(Path(__file__).stem)
+
+DATA_META = PROJECT_ROOT / config['paths']['metadata']
+RESULTS_EMB = PROJECT_ROOT / config['paths']['intermediate'] / "embeddings"
+RESULTS_ANOM = PROJECT_ROOT / config['paths']['intermediate'] / "anomaly_scores"
+RESULTS_CAND = PROJECT_ROOT / "results" / "candidates" # Not in config, use relative
+MEMORY = PROJECT_ROOT / config['paths']['memory']
 
 def load_state() -> dict:
     with open(MEMORY / "project_state.json") as f:
