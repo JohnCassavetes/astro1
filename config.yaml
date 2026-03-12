@@ -8,6 +8,7 @@ paths:
   
   # Output directories
   results: "results/final"
+  candidates: "results/candidates"
   intermediate: "results/intermediate"
   experimental: "results/experimental"
   

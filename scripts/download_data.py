@@ -23,27 +23,16 @@ import requests
 from tqdm import tqdm
 from PIL import Image
 
-# Paths
-import logging
-import yaml
-
-# Load configuration and setup paths
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-with open(PROJECT_ROOT / "config.yaml", "r") as f:
-    config = yaml.safe_load(f)
-
-# Setup logging
-LOG_DIR = PROJECT_ROOT / config['paths']['logs']
-LOG_DIR.mkdir(parents=True, exist_ok=True)
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler(LOG_DIR / f"{Path(__file__).stem}.log"),
-        logging.StreamHandler()
-    ]
+from common import (
+    ensure_dataset_state,
+    load_config,
+    save_json,
+    setup_logger,
+    update_project_state,
 )
-logger = logging.getLogger(Path(__file__).stem)
+
+PROJECT_ROOT, config = load_config()
+logger = setup_logger(__file__, config, PROJECT_ROOT)
 
 DATA_RAW = PROJECT_ROOT / config['paths']['raw_data']
 DATA_META = PROJECT_ROOT / config['paths']['metadata']
@@ -57,23 +46,18 @@ DEFAULT_HEADERS = {
     "Accept": "text/csv,application/octet-stream,image/jpeg,*/*",
 }
 
+def normalize_objid(value: object) -> str:
+    """Preserve large SDSS objids exactly as strings."""
+    text = str(value).strip()
+    if text.endswith(".0"):
+        text = text[:-2]
+    return text
+
 def load_state() -> Dict:
-    with open(MEMORY / "dataset_state.json") as f:
-        return json.load(f)
+    return ensure_dataset_state(MEMORY)
 
 def save_state(state: Dict):
-    with open(MEMORY / "dataset_state.json", 'w') as f:
-        json.dump(state, f, indent=2)
-
-def update_project_state(phase: str, status: str):
-    proj_path = MEMORY / "project_state.json"
-    with open(proj_path) as f:
-        proj = json.load(f)
-    proj["phases"][phase]["status"] = status
-    if status == "in_progress":
-        proj["current_phase"] = phase
-    with open(proj_path, 'w') as f:
-        json.dump(proj, f, indent=2)
+    save_json(MEMORY / "dataset_state.json", state)
 
 def query_with_retry(url: str, params: Dict, max_retries: int = 3, timeout: int = 60) -> Optional[pd.DataFrame]:
     """Query SkyServer with retry logic."""
@@ -88,7 +72,7 @@ def query_with_retry(url: str, params: Dict, max_retries: int = 3, timeout: int 
             # Remove comment lines starting with #
             lines = [line for line in response.text.split('\n') if not line.startswith('#')]
             csv_text = '\n'.join(lines)
-            df = pd.read_csv(StringIO(csv_text))
+            df = pd.read_csv(StringIO(csv_text), dtype={'objid': 'string'})
             return df
             
         except requests.exceptions.Timeout:
@@ -108,7 +92,7 @@ def query_sdss_skyserver(n_galaxies: int = 100) -> pd.DataFrame:
     
     # Simplified SQL query - avoid complex flags
     query = f"""SELECT TOP {n_galaxies}
-        p.objid, p.ra, p.dec,
+        CAST(p.objid AS VARCHAR(32)) AS objid, p.ra, p.dec,
         p.petroMag_r, p.petroR50_r,
         p.modelMag_g, p.modelMag_r, p.modelMag_i,
         p.run, p.rerun, p.camcol, p.field
@@ -126,6 +110,7 @@ def query_sdss_skyserver(n_galaxies: int = 100) -> pd.DataFrame:
     df = query_with_retry(url, params, max_retries=3, timeout=60)
     
     if df is not None and len(df) > 0:
+        df['objid'] = df['objid'].map(normalize_objid)
         print(f"Retrieved {len(df)} galaxies from SkyServer")
         return df
     
@@ -135,6 +120,7 @@ def query_sdss_skyserver(n_galaxies: int = 100) -> pd.DataFrame:
     df = query_with_retry(casjobs_url, params, max_retries=2, timeout=90)
     
     if df is not None and len(df) > 0:
+        df['objid'] = df['objid'].map(normalize_objid)
         print(f"Retrieved {len(df)} galaxies from CasJobs")
         return df
     
@@ -145,6 +131,7 @@ def query_sdss_skyserver(n_galaxies: int = 100) -> pd.DataFrame:
         result = SDSS.query_sql(query, data_release=17, timeout=60)
         if result is not None:
             df = result.to_pandas()
+            df['objid'] = df['objid'].map(normalize_objid)
             print(f"Retrieved {len(df)} galaxies via astroquery (DR17)")
             return df
     except Exception as e:
@@ -221,7 +208,7 @@ def download_cutouts(df: pd.DataFrame, max_downloads: Optional[int] = None) -> p
     results = []
     
     for idx, row in tqdm(df.iterrows(), total=len(df)):
-        objid = str(int(row['objid']))
+        objid = normalize_objid(row['objid'])
         ra, dec = row['ra'], row['dec']
         
         # Download JPEG
@@ -262,7 +249,7 @@ def main():
     DATA_META.mkdir(parents=True, exist_ok=True)
     
     # Update project state
-    update_project_state("data_collection", "in_progress")
+    update_project_state(MEMORY, "data_collection", "in_progress")
     
     # Load state
     state = load_state()
@@ -295,8 +282,8 @@ def main():
         df_downloads = download_cutouts(df, max_downloads=args.max_images)
         
         # Ensure objid is treated as string for both dataframes to avoid merge errors
-        df['objid'] = df['objid'].astype(str)
-        df_downloads['objid'] = df_downloads['objid'].astype(str)
+        df['objid'] = df['objid'].map(normalize_objid)
+        df_downloads['objid'] = df_downloads['objid'].map(normalize_objid)
         
         # Merge with catalog
         df = df.merge(df_downloads[['objid', 'downloaded', 'filepath', 'error']],
@@ -321,7 +308,7 @@ def main():
     df.to_csv(catalog_path, index=False)
     
     # Update project state
-    update_project_state("data_collection", "completed")
+    update_project_state(MEMORY, "data_collection", "completed")
     
     logger.info(f"\n{'='*60}")
     print(f"Stage 1 complete: REAL SDSS DR19 data")

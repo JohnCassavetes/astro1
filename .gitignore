@@ -41,6 +41,7 @@ Thumbs.db
 
 # Secrets
 .env
+.venv
 secrets/
 
 # Keep structure

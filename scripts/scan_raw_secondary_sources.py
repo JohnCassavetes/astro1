@@ -25,27 +25,10 @@ from PIL import Image, ImageDraw
 from scipy import ndimage
 from sklearn.ensemble import IsolationForest
 
+from common import load_config, setup_logger
 
-import logging
-import yaml
-
-# Load configuration and setup paths
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-with open(PROJECT_ROOT / "config.yaml", "r") as f:
-    config = yaml.safe_load(f)
-
-# Setup logging
-LOG_DIR = PROJECT_ROOT / config['paths']['logs']
-LOG_DIR.mkdir(parents=True, exist_ok=True)
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler(LOG_DIR / f"{Path(__file__).stem}.log"),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger(Path(__file__).stem)
+PROJECT_ROOT, config = load_config()
+logger = setup_logger(__file__, config, PROJECT_ROOT)
 
 RAW_DIR = PROJECT_ROOT / config['paths']['raw_data']
 META_PATH = PROJECT_ROOT / config['paths']['metadata'] / "galaxy_catalog.csv"

@@ -21,26 +21,10 @@ try:
 except ImportError:
     ASTROPY_AVAILABLE = False
 
-import logging
-import yaml
+from common import ensure_project_state, load_config, setup_logger, update_project_state
 
-# Load configuration and setup paths
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-with open(PROJECT_ROOT / "config.yaml", "r") as f:
-    config = yaml.safe_load(f)
-
-# Setup logging
-LOG_DIR = PROJECT_ROOT / config['paths']['logs']
-LOG_DIR.mkdir(parents=True, exist_ok=True)
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler(LOG_DIR / f"{Path(__file__).stem}.log"),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger(Path(__file__).stem)
+PROJECT_ROOT, config = load_config()
+logger = setup_logger(__file__, config, PROJECT_ROOT)
 
 DATA_RAW = PROJECT_ROOT / config['paths']['raw_data']
 DATA_PROC = PROJECT_ROOT / config['paths']['processed_data']
@@ -51,18 +35,7 @@ MEMORY = PROJECT_ROOT / config['paths']['memory']
 TARGET_SIZE = (224, 224)  # ResNet input size
 
 def load_state() -> dict:
-    with open(MEMORY / "project_state.json") as f:
-        return json.load(f)
-
-def update_project_state(phase: str, status: str):
-    proj_path = MEMORY / "project_state.json"
-    with open(proj_path) as f:
-        proj = json.load(f)
-    proj["phases"][phase]["status"] = status
-    if status == "in_progress":
-        proj["current_phase"] = phase
-    with open(proj_path, 'w') as f:
-        json.dump(proj, f, indent=2)
+    return ensure_project_state(MEMORY)
 
 def load_sdss_image(filepath: str) -> Optional[np.ndarray]:
     """
@@ -219,7 +192,7 @@ def main():
     args = parser.parse_args()
     
     DATA_PROC.mkdir(parents=True, exist_ok=True)
-    update_project_state("preprocessing", "in_progress")
+    update_project_state(MEMORY, "preprocessing", "in_progress")
     
     catalog_path = DATA_META / args.catalog
     if not catalog_path.exists():
@@ -249,7 +222,7 @@ def main():
         print("\nERROR: No images passed preprocessing (or no raw images found to process).")
         exit(1)
     
-    update_project_state("preprocessing", "completed")
+    update_project_state(MEMORY, "preprocessing", "completed")
     print(f"\nSaved to: {output_path}")
 
 if __name__ == "__main__":

@@ -13,46 +13,26 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 
-import logging
-import yaml
-
-# Load configuration and setup paths
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-with open(PROJECT_ROOT / "config.yaml", "r") as f:
-    config = yaml.safe_load(f)
-
-# Setup logging
-LOG_DIR = PROJECT_ROOT / config['paths']['logs']
-LOG_DIR.mkdir(parents=True, exist_ok=True)
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler(LOG_DIR / f"{Path(__file__).stem}.log"),
-        logging.StreamHandler()
-    ]
+from common import (
+    ensure_method_state,
+    ensure_project_state,
+    load_config,
+    save_json,
+    setup_logger,
+    update_project_state,
 )
-logger = logging.getLogger(Path(__file__).stem)
+
+PROJECT_ROOT, config = load_config()
+logger = setup_logger(__file__, config, PROJECT_ROOT)
 
 DATA_META = PROJECT_ROOT / config['paths']['metadata']
 RESULTS_EMB = PROJECT_ROOT / config['paths']['intermediate'] / "embeddings"
 RESULTS_ANOM = PROJECT_ROOT / config['paths']['intermediate'] / "anomaly_scores"
-RESULTS_CAND = PROJECT_ROOT / "results" / "candidates" # Not in config, use relative
+RESULTS_CAND = PROJECT_ROOT / config['paths']['candidates']
 MEMORY = PROJECT_ROOT / config['paths']['memory']
 
 def load_state() -> dict:
-    with open(MEMORY / "project_state.json") as f:
-        return json.load(f)
-
-def update_project_state(phase: str, status: str):
-    proj_path = MEMORY / "project_state.json"
-    with open(proj_path) as f:
-        proj = json.load(f)
-    proj["phases"][phase]["status"] = status
-    if status == "in_progress":
-        proj["current_phase"] = phase
-    with open(proj_path, 'w') as f:
-        json.dump(proj, f, indent=2)
+    return ensure_project_state(MEMORY)
 
 def detect_anomalies(catalog_path: Path, 
                      contamination: float = 0.05,
@@ -127,7 +107,7 @@ def main():
     
     RESULTS_ANOM.mkdir(parents=True, exist_ok=True)
     RESULTS_CAND.mkdir(parents=True, exist_ok=True)
-    update_project_state("anomaly_detection", "in_progress")
+    update_project_state(MEMORY, "anomaly_detection", "in_progress")
     
     catalog_path = DATA_META / "embedding_catalog.csv"
     if not catalog_path.exists():
@@ -146,13 +126,12 @@ def main():
         exit(1)
     
     # Update method state
-    with open(MEMORY / "method_state.json") as f:
-        method_state = json.load(f)
+    method_state = ensure_method_state(MEMORY)
+    method_state.setdefault('anomaly_detection', {})
     method_state['anomaly_detection']['method'] = 'IsolationForest'
-    with open(MEMORY / "method_state.json", 'w') as f:
-        json.dump(method_state, f, indent=2)
+    save_json(MEMORY / "method_state.json", method_state)
     
-    update_project_state("anomaly_detection", "completed")
+    update_project_state(MEMORY, "anomaly_detection", "completed")
     print(f"\nStage 4 complete.")
     print(f"Anomaly scores: {RESULTS_ANOM}/anomaly_scores.csv")
     print(f"Top candidates: {RESULTS_CAND}/initial_candidates.csv")

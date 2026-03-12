@@ -1,0 +1,46 @@
+# Astro1 Demo Configuration
+
+paths:
+  raw_data: "demo/data/raw"
+  processed_data: "demo/data/processed"
+  metadata: "demo/data/metadata"
+
+  results: "demo/results/final"
+  candidates: "demo/results/candidates"
+  intermediate: "demo/results/intermediate"
+  experimental: "demo/results/experimental"
+
+  models: "models"
+  logs: "demo/logs"
+  memory: "demo/memory"
+
+pipeline:
+  sdss:
+    ra_min: 150
+    ra_max: 200
+    dec_min: 0
+    dec_max: 50
+    limit: 100
+    img_size: 256
+    scale: 0.396
+
+  preprocessing:
+    target_size: [256, 256]
+    min_filesize_kb: 5
+
+  embeddings:
+    batch_size: 32
+    num_workers: 4
+
+  anomaly:
+    contamination: 0.1
+    n_estimators: 100
+
+  scanner:
+    sigma_threshold: 7.0
+    min_component_area: 60
+    min_flux_ratio: 0.15
+    max_color_diff: 0.2
+    search_radius: 64
+    separation_min: 15
+    separation_max: 70
