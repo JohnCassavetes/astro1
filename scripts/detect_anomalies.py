@@ -70,6 +70,10 @@ def detect_anomalies(catalog_path: Path,
     
     # Load embeddings
     emb_path = RESULTS_EMB / "galaxy_embeddings.npy"
+    if not emb_path.exists():
+        print(f"\nERROR: Embedding file not found: {emb_path}")
+        print("Run generate_embeddings.py first and make sure it completes successfully.")
+        return pd.DataFrame()
     embeddings = np.load(emb_path)
     
     # Filter to only galaxies in catalog

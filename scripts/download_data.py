@@ -12,16 +12,16 @@ Updated with robust retry logic for network timeouts.
 import os
 import json
 import time
+import io
 import argparse
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple
-from urllib.request import urlopen, Request
-from urllib.error import HTTPError, URLError
-import ssl
 
 import numpy as np
 import pandas as pd
+import requests
 from tqdm import tqdm
+from PIL import Image
 
 # Paths
 import logging
@@ -50,8 +50,12 @@ DATA_META = PROJECT_ROOT / config['paths']['metadata']
 MEMORY = PROJECT_ROOT / config['paths']['memory']
 
 # SDSS endpoints
-SKYSERVER_URL = "http://skyserver.sdss.org/dr19/SkyServerWS"
-SKYSERVER_SQL_URL = "http://skyserver.sdss.org/dr19/en/tools/search/x_sql.aspx"
+SKYSERVER_URL = "https://skyserver.sdss.org/dr19/SkyServerWS"
+SKYSERVER_SQL_URL = "https://skyserver.sdss.org/dr19/en/tools/search/x_sql.aspx"
+DEFAULT_HEADERS = {
+    "User-Agent": "astro1-pipeline/1.0",
+    "Accept": "text/csv,application/octet-stream,image/jpeg,*/*",
+}
 
 def load_state() -> Dict:
     with open(MEMORY / "dataset_state.json") as f:
@@ -73,12 +77,10 @@ def update_project_state(phase: str, status: str):
 
 def query_with_retry(url: str, params: Dict, max_retries: int = 3, timeout: int = 60) -> Optional[pd.DataFrame]:
     """Query SkyServer with retry logic."""
-    import requests
-    
     for attempt in range(max_retries):
         try:
             print(f"  Attempt {attempt + 1}/{max_retries}...")
-            response = requests.get(url, params=params, timeout=timeout)
+            response = requests.get(url, params=params, timeout=timeout, headers=DEFAULT_HEADERS)
             response.raise_for_status()
             
             # Parse CSV
@@ -157,44 +159,54 @@ def query_sdss_skyserver(n_galaxies: int = 100) -> pd.DataFrame:
         "Try again later or check https://www.sdss.org/"
     )
 
-def download_cutout_jpeg(ra: float, dec: float, objid: str, 
-                          scale: float = 0.396, width: int = 256, 
-                          height: int = 256) -> bool:
+def download_cutout_jpeg(ra: float, dec: float, objid: str,
+                         scale: float = 0.396, width: int = 256,
+                         height: int = 256) -> Tuple[bool, Optional[str]]:
     """
     Download JPEG cutout from SkyServer with retry.
     """
-    # Build URL
-    url = (f"http://skyserver.sdss.org/dr19/SkyServerWS/ImgCutout/getjpeg?"
-           f"ra={ra}&dec={dec}&scale={scale}&width={width}&height={height}&opt=")
-    
+    url = f"{SKYSERVER_URL}/ImgCutout/getjpeg"
+    params = {
+        "ra": ra,
+        "dec": dec,
+        "scale": scale,
+        "width": width,
+        "height": height,
+        "opt": "",
+    }
     output_path = DATA_RAW / f"{objid}.jpg"
-    
+
     max_retries = 3
     for attempt in range(max_retries):
         try:
-            # Create SSL context that doesn't verify certificates
-            ctx = ssl.create_default_context()
-            ctx.check_hostname = False
-            ctx.verify_mode = ssl.CERT_NONE
-            
-            with urlopen(url, context=ctx, timeout=30) as response:
-                if response.status == 200:
-                    data = response.read()
-                    if len(data) > 1000:  # Sanity check - not empty/error image
-                        with open(output_path, 'wb') as f:
-                            f.write(data)
-                        return True
-                    else:
-                        print(f"  Warning: Empty image for {objid}")
-                        return False
-                        
-        except (URLError, HTTPError) as e:
+            response = requests.get(
+                url,
+                params=params,
+                timeout=30,
+                headers=DEFAULT_HEADERS,
+            )
+            response.raise_for_status()
+            data = response.content
+
+            if len(data) < 1000:
+                raise ValueError(f"response too small ({len(data)} bytes)")
+
+            with Image.open(io.BytesIO(data)) as img:
+                img.verify()
+
+            with open(output_path, 'wb') as f:
+                f.write(data)
+            return True, None
+
+        except Exception as e:
+            if output_path.exists():
+                output_path.unlink()
             if attempt < max_retries - 1:
-                time.sleep(2 ** attempt)  # Exponential backoff
+                time.sleep(2 ** attempt)
             else:
-                print(f"  Failed to download {objid}: {e}")
-    
-    return False
+                return False, str(e)
+
+    return False, "download_failed"
 
 def download_cutouts(df: pd.DataFrame, max_downloads: Optional[int] = None) -> pd.DataFrame:
     """
@@ -213,7 +225,7 @@ def download_cutouts(df: pd.DataFrame, max_downloads: Optional[int] = None) -> p
         ra, dec = row['ra'], row['dec']
         
         # Download JPEG
-        success = download_cutout_jpeg(ra, dec, objid, width=256, height=256)
+        success, error = download_cutout_jpeg(ra, dec, objid, width=256, height=256)
         
         result = {
             'objid': objid,
@@ -223,7 +235,7 @@ def download_cutouts(df: pd.DataFrame, max_downloads: Optional[int] = None) -> p
             'petroR50_r': row.get('petroR50_r'),
             'downloaded': success,
             'filepath': str(DATA_RAW / f"{objid}.jpg") if success else None,
-            'error': None if success else 'download_failed'
+            'error': error
         }
         results.append(result)
         
@@ -233,8 +245,14 @@ def download_cutouts(df: pd.DataFrame, max_downloads: Optional[int] = None) -> p
     return pd.DataFrame(results)
 
 def main():
+    default_n = int(config.get('pipeline', {}).get('sdss', {}).get('limit', 50))
     parser = argparse.ArgumentParser(description='Download SDSS DR19 galaxy data')
-    parser.add_argument('--n', type=int, default=50, help='Number of galaxies (default: 50)')
+    parser.add_argument(
+        '--n',
+        type=int,
+        default=default_n,
+        help=f'Number of galaxies (default: config pipeline.sdss.limit={default_n})'
+    )
     parser.add_argument('--max-images', type=int, default=None, help='Max images to download')
     parser.add_argument('--catalog-only', action='store_true', help='Skip image download')
     args = parser.parse_args()
@@ -281,7 +299,7 @@ def main():
         df_downloads['objid'] = df_downloads['objid'].astype(str)
         
         # Merge with catalog
-        df = df.merge(df_downloads[['objid', 'downloaded', 'filepath']], 
+        df = df.merge(df_downloads[['objid', 'downloaded', 'filepath', 'error']],
                       on='objid', how='left')
         
         n_downloaded = df['downloaded'].sum()
@@ -312,6 +330,15 @@ def main():
         print(f"Images: {df['downloaded'].sum()}/{len(df)} downloaded")
     print(f"Source: skyserver.sdss.org/dr19/")
     print(f"{'='*60}")
+
+    if 'downloaded' in df.columns and int(df['downloaded'].sum()) == 0:
+        failed = df[df['downloaded'] == False]
+        if not failed.empty and 'error' in failed.columns:
+            print("\nERROR: Catalog retrieval succeeded, but all cutout downloads failed.")
+            sample_errors = failed['error'].dropna().head(3).tolist()
+            for err in sample_errors:
+                print(f"  - {err}")
+        raise SystemExit(1)
 
 if __name__ == "__main__":
     main()

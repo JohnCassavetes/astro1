@@ -93,7 +93,12 @@ def extract_embeddings(catalog_path: Path, batch_size: int = 32) -> pd.DataFrame
     Extract embeddings for all processed images.
     """
     df = pd.read_csv(catalog_path)
+    df = df[df['quality_pass'] == True].copy()
     print(f"Extracting embeddings for {len(df)} galaxies...")
+
+    if len(df) == 0:
+        print("\nERROR: No quality-passing processed images found in processed_catalog.csv.")
+        return pd.DataFrame()
     
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(f"Using device: {device}")

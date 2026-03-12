@@ -13,3 +13,4 @@ tqdm
 astroquery
 reproject
 photutils
+PyYAML
