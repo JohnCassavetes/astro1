@@ -61,6 +61,10 @@ def detect_anomalies(catalog_path: Path,
     Run Isolation Forest on embeddings to detect anomalies.
     """
     df = pd.read_csv(catalog_path)
+    if len(df) == 0:
+        print("\nERROR: Embedding catalog is empty. Cannot detect anomalies.")
+        return pd.DataFrame()
+        
     print(f"Running anomaly detection on {len(df)} galaxies...")
     print(f"Contamination: {contamination} (top {contamination*100:.1f}% flagged)")
     
@@ -132,6 +136,10 @@ def main():
         contamination=args.contamination,
         n_estimators=args.n_estimators
     )
+    
+    if len(df) == 0:
+        print("\nERROR: No anomalies detected (empty catalog). Halting.")
+        exit(1)
     
     # Update method state
     with open(MEMORY / "method_state.json") as f:

@@ -128,6 +128,10 @@ def extract_embeddings(catalog_path: Path, batch_size: int = 32) -> pd.DataFrame
                 features = features.reshape(1, -1)
             embeddings.append(features)
     
+    if not embeddings:
+        print("\nERROR: No valid images found to embed.")
+        return pd.DataFrame()
+        
     # Combine all embeddings
     all_embeddings = np.vstack(embeddings)
     
@@ -164,6 +168,10 @@ def main():
         return
     
     df = extract_embeddings(catalog_path, batch_size=args.batch_size)
+    
+    if len(df) == 0:
+        print("\nERROR: No embeddings generated. Halting pipeline.")
+        exit(1)
     
     # Save updated catalog
     output_path = DATA_META / "embedding_catalog.csv"

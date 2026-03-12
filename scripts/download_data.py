@@ -256,13 +256,16 @@ def main():
     
     try:
         df = query_sdss_skyserver(args.n)
+        if df is None or len(df) == 0:
+            print("\nERROR: No data retrieved from SDSS.")
+            exit(1)
     except RuntimeError as e:
         print(f"\nERROR: {e}")
         logger.info("\nTroubleshooting:")
         print("  1. Check internet connection: ping skyserver.sdss.org")
         print("  2. Check SDSS status: https://www.sdss.org/")
         print("  3. Try again later - servers may be under maintenance")
-        return
+        exit(1)
     
     # Save catalog metadata
     catalog_path = DATA_META / "galaxy_catalog.csv"

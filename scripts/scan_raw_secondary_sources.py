@@ -306,6 +306,10 @@ def main() -> None:
         if idx % 500 == 0:
             print(f"Scanned {idx} images...")
 
+    if not rows:
+        print("\nERROR: No valid images scanned. Halting scanner.")
+        exit(1)
+
     df = pd.DataFrame(rows)
     df = df.merge(meta[["objid", "ra", "dec", "petroMag_r", "petroR50_r"]], on="objid", how="left")
 

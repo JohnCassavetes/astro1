@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-import pandas as pd
-from pathlib import Path
-
 import logging
 import yaml
+import sys
 
 # Load configuration and setup paths
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -24,6 +22,11 @@ logging.basicConfig(
 logger = logging.getLogger(Path(__file__).stem)
 
 csv_path = PROJECT_ROOT / config['paths']['results'] / "raw_object_scan" / "raw_object_scan.csv"
+if not csv_path.exists():
+    print(f"\nERROR: File not found: {csv_path}")
+    print("Cannot compute stats. Halting.")
+    sys.exit(1)
+
 df = pd.read_csv(csv_path)
 
 flagged = df[df["secondary_object_flag"] == True]

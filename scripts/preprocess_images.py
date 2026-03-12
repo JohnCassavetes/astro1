@@ -245,6 +245,10 @@ def main():
     print(f"  Failed: {n_failed}")
     print(f"{'='*60}")
     
+    if n_passed == 0:
+        print("\nERROR: No images passed preprocessing (or no raw images found to process).")
+        exit(1)
+    
     update_project_state("preprocessing", "completed")
     print(f"\nSaved to: {output_path}")
 
